@@ -1,0 +1,449 @@
+<?xml version="1.0" ?>
+<robot name="baat" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find baat_description)/urdf/materials.xacro" />
+<xacro:include filename="$(find baat_description)/urdf/baat.trans" />
+<xacro:include filename="$(find baat_description)/urdf/baat.gazebo" />
+<link name="base_link">
+  <inertial>
+    <origin xyz="0.057970514069423586 0.019997048482695557 -0.013850431280397126" rpy="0 0 0"/>
+    <mass value="0.8967749649563515"/>
+    <inertia ixx="0.000292" iyy="0.000817" izz="0.000731" ixy="0.0" iyz="0.0" ixz="6.2e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="CenterThrusterR_1">
+  <inertial>
+    <origin xyz="-3.3599184892305067e-07 0.0020000000000000052 -7.55152248024804e-09" rpy="0 0 0"/>
+    <mass value="0.0024661502330678834"/>
+    <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="0.0" iyz="-0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.016431 -0.023 0.024634" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/CenterThrusterR_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.016431 -0.023 0.024634" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/CenterThrusterR_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="CenterThrusterL_1">
+  <inertial>
+    <origin xyz="-3.3599184892305067e-07 -0.0019999999999999966 -7.55152248024804e-09" rpy="0 0 0"/>
+    <mass value="0.0024661502330678834"/>
+    <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.016431 -0.017 0.024634" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/CenterThrusterL_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.016431 -0.017 0.024634" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/CenterThrusterL_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="BackThrusterR_1">
+  <inertial>
+    <origin xyz="0.0030000000000000027 1.3877787807814457e-17 4.933727255178322e-07" rpy="0 0 0"/>
+    <mass value="0.005326884503426852"/>
+    <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="0.0" iyz="-0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.101 -0.03 0.028146" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/BackThrusterR_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.101 -0.03 0.028146" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/BackThrusterR_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="BackThrusterL_1">
+  <inertial>
+    <origin xyz="0.0030000000000000027 6.938893903907228e-18 4.933727255247711e-07" rpy="0 0 0"/>
+    <mass value="0.005326884503426849"/>
+    <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.101 -0.01 0.028146" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/BackThrusterL_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.101 -0.01 0.028146" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/BackThrusterL_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="JawL_1">
+  <inertial>
+    <origin xyz="0.003188632749543424 -0.0010363707756858229 -0.00266945812753646" rpy="0 0 0"/>
+    <mass value="0.0001859805377055688"/>
+    <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="0.0" iyz="-0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.110082 -0.027875 -0.036923" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/JawL_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.110082 -0.027875 -0.036923" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/JawL_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="JawR_1">
+  <inertial>
+    <origin xyz="0.0031648181047550655 0.001080999653406741 -0.0026611162656640236" rpy="0 0 0"/>
+    <mass value="0.00018598053770558083"/>
+    <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="-0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.110146 -0.018548 -0.036923" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/JawR_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.110146 -0.018548 -0.036923" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/JawR_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="L6_1">
+  <inertial>
+    <origin xyz="0.0007874438180609789 5.134649267799635e-06 -0.0006615106867333409" rpy="0 0 0"/>
+    <mass value="0.0005095302243692603"/>
+    <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.109101 -0.02323 -0.037774" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/L6_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.109101 -0.02323 -0.037774" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/L6_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="L5_1">
+  <inertial>
+    <origin xyz="0.003679575778961483 0.0017743225942793532 -0.0030978876267520328" rpy="0 0 0"/>
+    <mass value="0.001497246500423717"/>
+    <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="-0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.102695 -0.021425 -0.043159" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/L5_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.102695 -0.021425 -0.043159" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/L5_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="L4_1">
+  <inertial>
+    <origin xyz="0.00713104427397937 4.948683752714622e-05 3.805345883539646e-08" rpy="0 0 0"/>
+    <mass value="0.002311674355709378"/>
+    <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="-0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.091876 -0.02315 -0.043159" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/L4_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.091876 -0.02315 -0.043159" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/L4_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="L3_1">
+  <inertial>
+    <origin xyz="0.003328922476330709 0.0028030098576428027 0.0029701409399272224" rpy="0 0 0"/>
+    <mass value="0.006131958653152942"/>
+    <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="-0.0" iyz="-0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.073818 -0.019944 -0.039559" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/L3_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.073818 -0.019944 -0.039559" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/L3_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="L2_1">
+  <inertial>
+    <origin xyz="-0.007949601261310349 -0.002935611204925106 0.007574601119981459" rpy="0 0 0"/>
+    <mass value="0.0033568476748432395"/>
+    <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="-0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.093616 -0.020082 -0.01976" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/L2_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.093616 -0.020082 -0.01976" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/L2_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="L1_1">
+  <inertial>
+    <origin xyz="0.004661152958194109 0.0003532044520803135 0.005173799269211691" rpy="0 0 0"/>
+    <mass value="0.00957670098137256"/>
+    <inertia ixx="0.0" iyy="1e-06" izz="0.0" ixy="-0.0" iyz="-0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.081833 -0.02 -0.00856" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/L1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.081833 -0.02 -0.00856" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/L1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="GPS_1">
+  <inertial>
+    <origin xyz="-2.352494810342609e-07 1.0562959936594174e-07 0.0014999999999999944" rpy="0 0 0"/>
+    <mass value="0.00028259999999999955"/>
+    <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="0.0" iyz="0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.029338 -0.02 -0.0565" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/GPS_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.029338 -0.02 -0.0565" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/GPS_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Camera_1">
+  <inertial>
+    <origin xyz="-2.3524948105854704e-07 1.0562959936594174e-07 0.00350000000000001" rpy="0 0 0"/>
+    <mass value="0.0006593999999999995"/>
+    <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.022338 -0.02 -0.0565" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/Camera_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.022338 -0.02 -0.0565" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/Camera_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="GarbageBot_1">
+  <inertial>
+    <origin xyz="0.00041533506014303917 1.6215906267075253e-07 0.0014999999999999944" rpy="0 0 0"/>
+    <mass value="0.01161386392624361"/>
+    <inertia ixx="0.0" iyy="1e-06" izz="1e-06" ixy="0.0" iyz="-0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.049838 -0.02 0.03" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/GarbageBot_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.049838 -0.02 0.03" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://baat_description/meshes/GarbageBot_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="CenterThrusterR" type="fixed">
+  <origin xyz="0.016431 0.023 -0.024634" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="CenterThrusterR_1"/>
+</joint>
+
+<joint name="CenterThrusterL" type="fixed">
+  <origin xyz="0.016431 0.017 -0.024634" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="CenterThrusterL_1"/>
+</joint>
+
+<joint name="BackThrusterR" type="fixed">
+  <origin xyz="0.101 0.03 -0.028146" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="BackThrusterR_1"/>
+</joint>
+
+<joint name="BackThrusterL" type="fixed">
+  <origin xyz="0.101 0.01 -0.028146" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="BackThrusterL_1"/>
+</joint>
+
+<joint name="JawL" type="prismatic">
+  <origin xyz="0.000981 0.004645 -0.000851" rpy="0 0 0"/>
+  <parent link="L6_1"/>
+  <child link="JawL_1"/>
+  <axis xyz="0.0 0.999966 0.008286"/>
+  <limit upper="0.005" lower="-0.003" effort="100" velocity="100"/>
+</joint>
+
+<joint name="JawR" type="prismatic">
+  <origin xyz="0.001045 -0.004682 -0.000851" rpy="0 0 0"/>
+  <parent link="L6_1"/>
+  <child link="JawR_1"/>
+  <axis xyz="0.0 0.999966 0.008286"/>
+  <limit upper="0.0021" lower="-0.005" effort="100" velocity="100"/>
+</joint>
+
+<joint name="L6" type="revolute">
+  <origin xyz="0.006406 0.001805 -0.005385" rpy="0 0 0"/>
+  <parent link="L5_1"/>
+  <child link="L6_1"/>
+  <axis xyz="0.766026 0.005327 -0.642788"/>
+  <limit upper="3.141593" lower="-3.141593" effort="100" velocity="100"/>
+</joint>
+
+<joint name="L5" type="revolute">
+  <origin xyz="0.010819 -0.001725 0.0" rpy="0 0 0"/>
+  <parent link="L4_1"/>
+  <child link="L5_1"/>
+  <axis xyz="0.006953 -0.999976 -0.0"/>
+  <limit upper="2.617994" lower="-1.308997" effort="100" velocity="100"/>
+</joint>
+
+<joint name="L4" type="revolute">
+  <origin xyz="0.018058 0.003206 0.0036" rpy="0 0 0"/>
+  <parent link="L3_1"/>
+  <child link="L4_1"/>
+  <axis xyz="0.999976 0.006953 0.0"/>
+  <limit upper="3.141593" lower="-3.141593" effort="100" velocity="100"/>
+</joint>
+
+<joint name="L3" type="revolute">
+  <origin xyz="-0.019798 -0.000138 0.019799" rpy="0 0 0"/>
+  <parent link="L2_1"/>
+  <child link="L3_1"/>
+  <axis xyz="-0.006953 0.999976 0.0"/>
+  <limit upper="0.610865" lower="-4.101524" effort="100" velocity="100"/>
+</joint>
+
+<joint name="L2" type="revolute">
+  <origin xyz="0.011783 8.2e-05 0.0112" rpy="0 0 0"/>
+  <parent link="L1_1"/>
+  <child link="L2_1"/>
+  <axis xyz="0.006953 -0.999976 -0.0"/>
+  <limit upper="1.134464" lower="-3.490659" effort="100" velocity="100"/>
+</joint>
+
+<joint name="L1" type="revolute">
+  <origin xyz="0.081833 0.02 0.00856" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="L1_1"/>
+  <axis xyz="-0.0 -0.0 1.0"/>
+  <limit upper="2.181662" lower="-2.181662" effort="100" velocity="100"/>
+</joint>
+
+<joint name="GPSmount" type="fixed">
+  <origin xyz="0.029338 0.02 0.0565" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="GPS_1"/>
+</joint>
+
+<joint name="CameraMount" type="fixed">
+  <origin xyz="0.022338 0.02 0.0565" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="Camera_1"/>
+</joint>
+
+<joint name="GarbageMount" type="fixed">
+  <origin xyz="0.049838 0.02 -0.03" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="GarbageBot_1"/>
+</joint>
+
+</robot>
