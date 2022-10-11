@@ -4,11 +4,21 @@
 <xacro:include filename="$(find ros_robot_description)/urdf/materials.xacro" />
 <xacro:include filename="$(find ros_robot_description)/urdf/ros_robot.trans" />
 <xacro:include filename="$(find ros_robot_description)/urdf/ros_robot.gazebo" />
+<xacro:include filename="$(find ros_robot_description)/urdf/ros_robot_FrontCamera.xacro" />
+<xacro:include filename="$(find ros_robot_description)/urdf/ros_robot_LeftCamera.xacro" />
+<xacro:include filename="$(find ros_robot_description)/urdf/ros_robot_RightCamera.xacro" />
+<xacro:include filename="$(find ros_robot_description)/urdf/ros_robot_BackCamera.xacro" />
+<xacro:include filename="$(find ros_robot_description)/urdf/ros_robot_ArmCamera.xacro" />
+<xacro:include filename="$(find ros_robot_description)/urdf/ros_robot_GpsSensor.xacro" />
+
+
+
 <link name="base_link">
   <inertial>
     <origin xyz="0.044354227312182234 0.08057379028516376 0.21043007492326804" rpy="0 0 0"/>
-    <mass value="880.6995319303643"/>
-    <inertia ixx="28.28545" iyy="80.038922" izz="71.915121" ixy="0.008323" iyz="0.00454" ixz="5.656101"/>
+    <mass value="880"/>
+    <!--<inertia ixx="28.28545" iyy="80.038922" izz="71.915121" ixy="0.008323" iyz="0.00454" ixz="5.656101"/>-->
+    <inertia ixx="0.1" iyy="0.1" izz="0.1" ixy="0" iyz="0" ixz="0"/>
   </inertial>
   <visual>
     <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -297,7 +307,7 @@
     </geometry>
   </collision>
 </link>
-
+<!--
 <link name="CameraFront_1">
   <inertial>
     <origin xyz="3.9235725490804896e-07 2.745653550351168e-07 0.03499999999999992" rpy="0 0 0"/>
@@ -361,27 +371,6 @@
   </collision>
 </link>
 
-<link name="GPS_1">
-  <inertial>
-    <origin xyz="3.9235725490804896e-07 2.745653554930838e-07 0.015000000000000013" rpy="0 0 0"/>
-    <mass value="0.2825999999999998"/>
-    <inertia ixx="4.2e-05" iyy="5.9e-05" izz="5.9e-05" ixy="0.0" iyz="-0.0" ixz="-0.0"/>
-  </inertial>
-  <visual>
-    <origin xyz="0.25401 -0.080605 -0.91" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/GPS_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="paint_enamel_glossy_red_1"/>
-  </visual>
-  <collision>
-    <origin xyz="0.25401 -0.080605 -0.91" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/GPS_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
-
 <link name="CameraArm_1">
   <inertial>
     <origin xyz="0.0032135726825279765 2.2141618967422283e-05 0.0038301783339352857" rpy="0 0 0"/>
@@ -402,6 +391,38 @@
     </geometry>
   </collision>
 </link>
+
+<link name="GPS_1">
+  <inertial>
+    <origin xyz="3.9235725490804896e-07 2.745653554930838e-07 0.015000000000000013" rpy="0 0 0"/>
+    <mass value="0.2825999999999998"/>
+    <inertia ixx="4.2e-05" iyy="5.9e-05" izz="5.9e-05" ixy="0.0" iyz="-0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.25401 -0.080605 -0.91" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://ros_robot_description/meshes/GPS_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="paint_enamel_glossy_red_1"/>
+  </visual>
+  <collision>
+    <origin xyz="0.25401 -0.080605 -0.91" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://ros_robot_description/meshes/GPS_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+-->
+
+
+ <!-- World
+ <link name="world"> </link>
+ <joint name="baseLinkMover" type="fixed">
+    <origin xyz="0 0 0.25" rpy="0 0 0"/>
+    <parent link="world"/>
+    <child link="base_link"/>
+  </joint>
+-->
 
 <joint name="CenterThrusterR" type="fixed">
   <origin xyz="-0.368081 0.110604 0.09866" rpy="0 0 0"/>
@@ -496,23 +517,29 @@
   <parent link="base_link"/>
   <child link="GarbageBot_1"/>
 </joint>
-
+<!--
 <joint name="CameraFrontMount" type="fixed">
   <origin xyz="-0.30901 0.080605 0.91" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="CameraFront_1"/>
 </joint>
 
-<joint name="CameraRightMount" type="fixed">
+<joint name="CameraLeftMount" type="fixed">
   <origin xyz="-0.21901 0.035605 0.91" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="CameraLeft_1"/>
 </joint>
 
-<joint name="CameraLeftMount" type="fixed">
+<joint name="CameraRightMount" type="fixed">
   <origin xyz="-0.21901 0.125605 0.91" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="CameraRight_1"/>
+</joint>
+
+<joint name="CameraArmMount" type="fixed">
+  <origin xyz="0.020679 0.000144 0.0192" rpy="0 0 0"/>
+  <parent link="L6_1"/>
+  <child link="CameraArm_1"/>
 </joint>
 
 <joint name="gpsmount" type="fixed">
@@ -521,10 +548,6 @@
   <child link="GPS_1"/>
 </joint>
 
-<joint name="CameraArmMount" type="fixed">
-  <origin xyz="0.020679 0.000144 0.0192" rpy="0 0 0"/>
-  <parent link="L6_1"/>
-  <child link="CameraArm_1"/>
-</joint>
+-->
 
 </robot>

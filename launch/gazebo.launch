@@ -8,4 +8,19 @@
     <arg name="headless" value="false"/>
     <arg name="debug" value="false"/>
   </include>
+
+
+
+  <rosparam file="$(find ros_robot_description)/launch/controller.yaml" command="load"/>
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="ros_robot" args="JawL_position_controller JawR_position_controller L6_position_controller L5_position_controller L4_position_controller L3_position_controller L2_position_controller L1_position_controller joint_state_controller "/>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+    <remap from="/joint_states" to="/ros_robot/joint_states"/>
+  </node>
+
+  <arg name="model" default="$(find ros_robot_description)/urdf/ros_robot.xacro"/>
+  <arg name="gui" default="true"/>
+  <param name="robot_description" command="$(find xacro)/xacro $(arg model)"/>
+  <param name="use_gui" value="$(arg gui)"/>
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+
 </launch>
