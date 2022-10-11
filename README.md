@@ -1,2 +1,2 @@
 # ROS_Robot
-## name of pack is baat_description
+## name of pack is ros_robot_description
