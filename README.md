@@ -2,6 +2,10 @@
 ## name of pack is ros_robot_description
 
 ### World 
+World created by https://github.com/osrf/vrx 
+center of gazebo world Lat/long -33.724223 150.679736 
+modeled after realworld sydney regatta
+https://goo.gl/maps/6DaRK1RNaAh5Uh5XA 
 
 ### setup GIT in terminal VSCODE
 git config --global user.email yourname@domain.com
@@ -11,11 +15,4 @@ git config --global user.name "First Last"
 wave_gazebo_plugins
 usv_gazebo_plugins
 
-@InProceedings{bingham19toward,
-  Title                    = {Toward Maritime Robotic Simulation in Gazebo},
-  Author                   = {Brian Bingham and Carlos Aguero and Michael McCarrin and Joseph Klamo and Joshua Malia and Kevin Allen and Tyler Lum and Marshall Rawson and Rumman Waqar},
-  Booktitle                = {Proceedings of MTS/IEEE OCEANS Conference},
-  Year                     = {2019},
-  Address                  = {Seattle, WA},
-  Month                    = {October}
-}
+
