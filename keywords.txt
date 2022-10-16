@@ -1,0 +1,2 @@
+
+rostopic pub -1 /ros_robot/thrusters/left_thrust_cmd std_msgs/Float32 -- -2.0

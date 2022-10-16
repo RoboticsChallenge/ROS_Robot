@@ -7,9 +7,23 @@ project(ros_robot_description)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
+
+find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Core REQUIRED)
+find_package(Protobuf REQUIRED)
+find_package(gazebo REQUIRED)
+
 find_package(catkin REQUIRED COMPONENTS
+  gazebo_dev
+  geographic_msgs
+  message_generation
+  roscpp
   rospy
+  std_msgs
+  wave_gazebo
+  xacro
 )
+
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -44,6 +58,27 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * uncomment the generate_messages entry below
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
+# Python scripts setup
+add_message_files(
+  FILES
+  Contact.msg
+)
+
+add_service_files(
+  FILES
+  ColorSequence.srv
+)
+
+catkin_python_setup()
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
+
+catkin_package(
+  CATKIN_DEPENDS wave_gazebo xacro gazebo_dev geographic_msgs std_msgs message_runtime
+)
 ## Generate messages in the 'msg' folder
 # add_message_files(
 #   FILES
@@ -100,12 +135,6 @@ find_package(catkin REQUIRED COMPONENTS
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
-catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES fusion2urdf
-#  CATKIN_DEPENDS rospy
-#  DEPENDS system_lib
-)
 
 ###########
 ## Build ##
@@ -115,6 +144,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
 # include
+  ${GAZEBO_INCLUDE_DIRS}
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -182,6 +212,23 @@ include_directories(
 #   # myfile2
 #   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 # )
+
+xacro_add_files(
+  worlds/sydneyregatta.world.xacro
+  INSTALL DESTINATION worlds
+)
+install(DIRECTORY worlds/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/worlds)
+install(DIRECTORY models/
+DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/models)
+install(DIRECTORY urdf/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/urdf)
+  
+catkin_install_python(PROGRAMS
+    nodes/twist2thrust.py
+    nodes/key2thrust_angle.py
+    scripts/generate_worlds.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 #############
 ## Testing ##

@@ -4,20 +4,27 @@
 <xacro:include filename="$(find ros_robot_description)/urdf/materials.xacro" />
 <xacro:include filename="$(find ros_robot_description)/urdf/ros_robot.trans" />
 <xacro:include filename="$(find ros_robot_description)/urdf/ros_robot.gazebo" />
-<xacro:include filename="$(find ros_robot_description)/urdf/ros_robot_FrontCamera.xacro" />
-<xacro:include filename="$(find ros_robot_description)/urdf/ros_robot_LeftCamera.xacro" />
-<xacro:include filename="$(find ros_robot_description)/urdf/ros_robot_RightCamera.xacro" />
-<xacro:include filename="$(find ros_robot_description)/urdf/ros_robot_BackCamera.xacro" />
-<xacro:include filename="$(find ros_robot_description)/urdf/ros_robot_ArmCamera.xacro" />
-<xacro:include filename="$(find ros_robot_description)/urdf/ros_robot_GpsSensor.xacro" />
 
+<xacro:property name="visual_camera" value="false" />
+<xacro:include filename="$(find ros_robot_description)/urdf/Sensors/ros_robot_FrontCamera.xacro" />
+<xacro:include filename="$(find ros_robot_description)/urdf/Sensors/ros_robot_LeftCamera.xacro" />
+<xacro:include filename="$(find ros_robot_description)/urdf/Sensors/ros_robot_RightCamera.xacro" />
+<xacro:include filename="$(find ros_robot_description)/urdf/Sensors/ros_robot_BackCamera.xacro" />
+<xacro:include filename="$(find ros_robot_description)/urdf/Sensors/ros_robot_ArmCamera.xacro" />
+<xacro:include filename="$(find ros_robot_description)/urdf/Sensors/ros_robot_GpsSensor.xacro" />
 
+<xacro:include filename="$(find ros_robot_description)/urdf/Thrusters/CenterThruster.xacro" />
+<xacro:include filename="$(find ros_robot_description)/urdf/Thrusters/BackThrusterRight.xacro" />
+<xacro:include filename="$(find ros_robot_description)/urdf/Thrusters/BackThrusterLeft.xacro" />
+<xacro:include filename="$(find ros_robot_description)/urdf/Thrusters/Thrusters.gazebo" />
+
+<xacro:include filename="$(find ros_robot_description)/urdf/RobotArm/RobotArm.xacro" />
+<xacro:include filename="$(find ros_robot_description)/urdf/RobotArm/RobotArm.gazebo" />
 
 <link name="base_link">
   <inertial>
     <origin xyz="0.044354227312182234 0.08057379028516376 0.21043007492326804" rpy="0 0 0"/>
-    <mass value="880"/>
-    <!--<inertia ixx="28.28545" iyy="80.038922" izz="71.915121" ixy="0.008323" iyz="0.00454" ixz="5.656101"/>-->
+    <mass value="110"/>
     <inertia ixx="0.1" iyy="0.1" izz="0.1" ixy="0" iyz="0" ixz="0"/>
   </inertial>
   <visual>
@@ -35,262 +42,10 @@
   </collision>
 </link>
 
-<link name="CenterThrusterR_1">
-  <inertial>
-    <origin xyz="3.8493357595870137e-07 0.020000218269361866 -7.552568147273231e-08" rpy="0 0 0"/>
-    <mass value="2.4661502330679896"/>
-    <inertia ixx="0.00187" iyy="0.003083" izz="0.00187" ixy="-0.0" iyz="-0.0" ixz="-0.0"/>
-  </inertial>
-  <visual>
-    <origin xyz="0.368081 -0.110604 -0.09866" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/CenterThrusterR_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="paint_enamel_glossy_red_1_1"/>
-  </visual>
-  <collision>
-    <origin xyz="0.368081 -0.110604 -0.09866" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/CenterThrusterR_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
-
-<link name="CenterThrusterL_1">
-  <inertial>
-    <origin xyz="3.849335762362571e-07 -0.01999978173063812 -7.552568151436567e-08" rpy="0 0 0"/>
-    <mass value="2.4661502330679888"/>
-    <inertia ixx="0.00187" iyy="0.003083" izz="0.00187" ixy="0.0" iyz="-0.0" ixz="0.0"/>
-  </inertial>
-  <visual>
-    <origin xyz="0.368081 -0.050604 -0.09866" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/CenterThrusterL_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="paint_enamel_glossy_red_1_1"/>
-  </visual>
-  <collision>
-    <origin xyz="0.368081 -0.050604 -0.09866" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/CenterThrusterL_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
-
-<link name="BackThrusterR_1">
-  <inertial>
-    <origin xyz="0.029999744852065302 2.182693619456888e-07 -6.627274470871747e-08" rpy="0 0 0"/>
-    <mass value="5.326884503426855"/>
-    <inertia ixx="0.009588" iyy="0.006392" izz="0.006392" ixy="0.0" iyz="0.0" ixz="0.0"/>
-  </inertial>
-  <visual>
-    <origin xyz="-0.477613 -0.180604 -0.063545" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/BackThrusterR_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="paint_enamel_glossy_red_1_1"/>
-  </visual>
-  <collision>
-    <origin xyz="-0.477613 -0.180604 -0.063545" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/BackThrusterR_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
-
-<link name="BackThrusterL_1">
-  <inertial>
-    <origin xyz="0.02999974485206519 2.1826936186936097e-07 -6.627274470871747e-08" rpy="0 0 0"/>
-    <mass value="5.3268845034268555"/>
-    <inertia ixx="0.009588" iyy="0.006392" izz="0.006392" ixy="-0.0" iyz="-0.0" ixz="0.0"/>
-  </inertial>
-  <visual>
-    <origin xyz="-0.477613 0.019396 -0.063545" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/BackThrusterL_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="paint_enamel_glossy_red_1_1"/>
-  </visual>
-  <collision>
-    <origin xyz="-0.477613 0.019396 -0.063545" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/BackThrusterL_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
-
-<link name="JawL_1">
-  <inertial>
-    <origin xyz="0.03189007234749497 -0.010365489487497326 -0.026698581275366062" rpy="0 0 0"/>
-    <mass value="0.18598053770557255"/>
-    <inertia ixx="7e-05" iyy="0.000135" izz="9.2e-05" ixy="1.7e-05" iyz="-1.4e-05" ixz="6.3e-05"/>
-  </inertial>
-  <visual>
-    <origin xyz="-0.568429 -0.159356 -0.714234" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/JawL_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="aluminum_anodized_glossy_blue"/>
-  </visual>
-  <collision>
-    <origin xyz="-0.568429 -0.159356 -0.714234" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/JawL_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
-
-<link name="JawR_1">
-  <inertial>
-    <origin xyz="0.03164392589961296 0.010807214803428875 -0.026615162656641878" rpy="0 0 0"/>
-    <mass value="0.18598053770557915"/>
-    <inertia ixx="7e-05" iyy="0.000133" izz="9.1e-05" ixy="-1.7e-05" iyz="1.5e-05" ixz="6.3e-05"/>
-  </inertial>
-  <visual>
-    <origin xyz="-0.569077 -0.066087 -0.714234" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/JawR_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="aluminum_anodized_glossy_blue"/>
-  </visual>
-  <collision>
-    <origin xyz="-0.569077 -0.066087 -0.714234" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/JawR_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
-
-<link name="L6_1">
-  <inertial>
-    <origin xyz="0.008033096186199185 5.72987518178969e-05 -0.006308097141295432" rpy="0 0 0"/>
-    <mass value="0.5174654530927676"/>
-    <inertia ixx="0.000849" iyy="0.000137" izz="0.000847" ixy="5e-06" iyz="0.0" ixz="2e-06"/>
-  </inertial>
-  <visual>
-    <origin xyz="-0.558618 -0.112901 -0.722736" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/L6_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="paint_enamel_glossy_black"/>
-  </visual>
-  <collision>
-    <origin xyz="-0.558618 -0.112901 -0.722736" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/L6_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
-
-<link name="L5_1">
-  <inertial>
-    <origin xyz="0.036796502641542383 0.01774244421152102 -0.03097887626757112" rpy="0 0 0"/>
-    <mass value="1.4972465004236954"/>
-    <inertia ixx="0.00089" iyy="0.001035" izz="0.00093" ixy="-7e-06" iyz="6e-06" ixz="0.000115"/>
-  </inertial>
-  <visual>
-    <origin xyz="-0.494562 -0.094855 -0.77659" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/L5_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="paint_enamel_glossy_black"/>
-  </visual>
-  <collision>
-    <origin xyz="-0.494562 -0.094855 -0.77659" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/L5_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
-
-<link name="L4_1">
-  <inertial>
-    <origin xyz="0.07130902791151078 0.0004961184374081828 3.779030740558298e-07" rpy="0 0 0"/>
-    <mass value="2.311666481638537"/>
-    <inertia ixx="0.001409" iyy="0.00355" izz="0.003934" ixy="-1.5e-05" iyz="0.0" ixz="0.0"/>
-  </inertial>
-  <visual>
-    <origin xyz="-0.386374 -0.112103 -0.77659" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/L4_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="paint_enamel_glossy_black"/>
-  </visual>
-  <collision>
-    <origin xyz="-0.386374 -0.112103 -0.77659" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/L4_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
-
-<link name="L3_1">
-  <inertial>
-    <origin xyz="0.033289969615090176 0.028027316845520345 0.029701409398982914" rpy="0 0 0"/>
-    <mass value="6.131958653186025"/>
-    <inertia ixx="0.005791" iyy="0.022845" izz="0.021796" ixy="-0.000731" iyz="-0.000651" ixz="-0.001282"/>
-  </inertial>
-  <visual>
-    <origin xyz="-0.205792 -0.080047 -0.74059" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/L3_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="paint_enamel_glossy_black"/>
-  </visual>
-  <collision>
-    <origin xyz="-0.205792 -0.080047 -0.74059" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/L3_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
-
-<link name="L2_1">
-  <inertial>
-    <origin xyz="-0.07950096268548501 -0.029355937228571147 0.07574661040954678" rpy="0 0 0"/>
-    <mass value="3.3568597539847445"/>
-    <inertia ixx="0.022491" iyy="0.044645" izz="0.022859" ixy="-4.4e-05" iyz="8.9e-05" ixz="0.021449"/>
-  </inertial>
-  <visual>
-    <origin xyz="-0.403777 -0.081424 -0.5426" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/L2_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="paint_enamel_glossy_black"/>
-  </visual>
-  <collision>
-    <origin xyz="-0.403777 -0.081424 -0.5426" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/L2_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
-
-<link name="L1_1">
-  <inertial>
-    <origin xyz="0.04661494578622072 0.003532294016085999 0.05173771933594512" rpy="0 0 0"/>
-    <mass value="9.576664836012535"/>
-    <inertia ixx="0.031917" iyy="0.062523" izz="0.04245" ixy="-0.00181" iyz="-0.001638" ixz="-0.023928"/>
-  </inertial>
-  <visual>
-    <origin xyz="-0.285939 -0.080604 -0.4306" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/L1_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="paint_enamel_glossy_black"/>
-  </visual>
-  <collision>
-    <origin xyz="-0.285939 -0.080604 -0.4306" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/L1_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
-
 <link name="GarbageBot_1">
   <inertial>
     <origin xyz="0.004156095453495663 3.839859988474803e-06 0.015000000000000034" rpy="0 0 0"/>
-    <mass value="11.613863926243594"/>
+    <mass value="11"/>
     <inertia ixx="0.038479" iyy="0.059958" izz="0.096695" ixy="2e-06" iyz="-0.0" ixz="-0.0"/>
   </inertial>
   <visual>
@@ -307,209 +62,12 @@
     </geometry>
   </collision>
 </link>
-<!--
-<link name="CameraFront_1">
-  <inertial>
-    <origin xyz="3.9235725490804896e-07 2.745653550351168e-07 0.03499999999999992" rpy="0 0 0"/>
-    <mass value="0.4395999999999997"/>
-    <inertia ixx="0.000238" iyy="0.000194" izz="7.3e-05" ixy="-0.0" iyz="0.0" ixz="-0.0"/>
-  </inertial>
-  <visual>
-    <origin xyz="0.30901 -0.080605 -0.91" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/CameraFront_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="paint_enamel_glossy_red_1"/>
-  </visual>
-  <collision>
-    <origin xyz="0.30901 -0.080605 -0.91" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/CameraFront_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
 
-<link name="CameraLeft_1">
-  <inertial>
-    <origin xyz="3.9235725468600435e-07 2.745653554098171e-07 0.03499999999999992" rpy="0 0 0"/>
-    <mass value="0.4395999999999995"/>
-    <inertia ixx="0.000194" iyy="0.000238" izz="7.3e-05" ixy="0.0" iyz="-0.0" ixz="0.0"/>
-  </inertial>
-  <visual>
-    <origin xyz="0.21901 -0.035605 -0.91" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/CameraLeft_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="paint_enamel_glossy_red_1"/>
-  </visual>
-  <collision>
-    <origin xyz="0.21901 -0.035605 -0.91" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/CameraLeft_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
+<link name="world_boat_link"/>
 
-<link name="CameraRight_1">
-  <inertial>
-    <origin xyz="3.923572546582488e-07 2.745653553959393e-07 0.03499999999999992" rpy="0 0 0"/>
-    <mass value="0.4396000000000005"/>
-    <inertia ixx="0.000194" iyy="0.000238" izz="7.3e-05" ixy="0.0" iyz="-0.0" ixz="0.0"/>
-  </inertial>
-  <visual>
-    <origin xyz="0.21901 -0.125605 -0.91" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/CameraRight_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="paint_enamel_glossy_red_1"/>
-  </visual>
-  <collision>
-    <origin xyz="0.21901 -0.125605 -0.91" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/CameraRight_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
-
-<link name="CameraArm_1">
-  <inertial>
-    <origin xyz="0.0032135726825279765 2.2141618967422283e-05 0.0038301783339352857" rpy="0 0 0"/>
-    <mass value="0.0039250000000000075"/>
-    <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="0.0" iyz="-0.0" ixz="-0.0"/>
-  </inertial>
-  <visual>
-    <origin xyz="-0.579297 -0.113045 -0.741936" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/CameraArm_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="paint_enamel_glossy_red_1"/>
-  </visual>
-  <collision>
-    <origin xyz="-0.579297 -0.113045 -0.741936" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/CameraArm_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
-
-<link name="GPS_1">
-  <inertial>
-    <origin xyz="3.9235725490804896e-07 2.745653554930838e-07 0.015000000000000013" rpy="0 0 0"/>
-    <mass value="0.2825999999999998"/>
-    <inertia ixx="4.2e-05" iyy="5.9e-05" izz="5.9e-05" ixy="0.0" iyz="-0.0" ixz="-0.0"/>
-  </inertial>
-  <visual>
-    <origin xyz="0.25401 -0.080605 -0.91" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/GPS_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="paint_enamel_glossy_red_1"/>
-  </visual>
-  <collision>
-    <origin xyz="0.25401 -0.080605 -0.91" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://ros_robot_description/meshes/GPS_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
--->
-
-
- <!-- World
- <link name="world"> </link>
- <joint name="baseLinkMover" type="fixed">
-    <origin xyz="0 0 0.25" rpy="0 0 0"/>
-    <parent link="world"/>
-    <child link="base_link"/>
-  </joint>
--->
-
-<joint name="CenterThrusterR" type="fixed">
-  <origin xyz="-0.368081 0.110604 0.09866" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="CenterThrusterR_1"/>
-</joint>
-
-<joint name="CenterThrusterL" type="fixed">
-  <origin xyz="-0.368081 0.050604 0.09866" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="CenterThrusterL_1"/>
-</joint>
-
-<joint name="BackThrusterR" type="fixed">
-  <origin xyz="0.477613 0.180604 0.063545" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="BackThrusterR_1"/>
-</joint>
-
-<joint name="BackThrusterL" type="fixed">
-  <origin xyz="0.477613 -0.019396 0.063545" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="BackThrusterL_1"/>
-</joint>
-
-<joint name="JawL" type="prismatic">
-  <origin xyz="0.009811 0.046455 -0.008502" rpy="0 0 0"/>
-  <parent link="L6_1"/>
-  <child link="JawL_1"/>
-  <axis xyz="0.0 0.999966 0.008286"/>
-  <limit upper="0.005" lower="-0.003" effort="100" velocity="100"/>
-</joint>
-
-<joint name="JawR" type="prismatic">
-  <origin xyz="0.010459 -0.046814 -0.008502" rpy="0 0 0"/>
-  <parent link="L6_1"/>
-  <child link="JawR_1"/>
-  <axis xyz="0.0 0.999966 0.008286"/>
-  <limit upper="0.0021" lower="-0.005" effort="100" velocity="100"/>
-</joint>
-
-<joint name="L6" type="revolute">
-  <origin xyz="0.064056 0.018046 -0.053854" rpy="0 0 0"/>
-  <parent link="L5_1"/>
-  <child link="L6_1"/>
-  <axis xyz="0.766026 0.005327 -0.642788"/>
-  <limit upper="3.141593" lower="-3.141593" effort="100" velocity="100"/>
-</joint>
-
-<joint name="L5" type="revolute">
-  <origin xyz="0.108188 -0.017248 0.0" rpy="0 0 0"/>
-  <parent link="L4_1"/>
-  <child link="L5_1"/>
-  <axis xyz="0.006953 -0.999976 -0.0"/>
-  <limit upper="2.617994" lower="-1.308997" effort="100" velocity="100"/>
-</joint>
-
-<joint name="L4" type="revolute">
-  <origin xyz="0.180582 0.032056 0.036" rpy="0 0 0"/>
-  <parent link="L3_1"/>
-  <child link="L4_1"/>
-  <axis xyz="0.999976 0.006953 0.0"/>
-  <limit upper="3.141593" lower="-3.141593" effort="100" velocity="100"/>
-</joint>
-
-<joint name="L3" type="revolute">
-  <origin xyz="-0.197985 -0.001377 0.19799" rpy="0 0 0"/>
-  <parent link="L2_1"/>
-  <child link="L3_1"/>
-  <axis xyz="-0.006953 0.999976 0.0"/>
-  <limit upper="0.610865" lower="-4.101524" effort="100" velocity="100"/>
-</joint>
-
-<joint name="L2" type="revolute">
-  <origin xyz="0.117838 0.00082 0.112" rpy="0 0 0"/>
-  <parent link="L1_1"/>
-  <child link="L2_1"/>
-  <axis xyz="0.006953 -0.999976 -0.0"/>
-  <limit upper="1.134464" lower="-3.490659" effort="100" velocity="100"/>
-</joint>
-
-<joint name="L1" type="revolute">
-  <origin xyz="0.285939 0.080604 0.4306" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="L1_1"/>
-  <axis xyz="-0.0 -0.0 1.0"/>
-  <limit upper="2.181662" lower="-2.181662" effort="100" velocity="100"/>
+<joint name="world_boat_joint" type="fixed">
+  <parent link="world_boat_link"/>
+  <child link="base_link"/>
 </joint>
 
 <joint name="GarbageMount" type="fixed">
@@ -517,37 +75,5 @@
   <parent link="base_link"/>
   <child link="GarbageBot_1"/>
 </joint>
-<!--
-<joint name="CameraFrontMount" type="fixed">
-  <origin xyz="-0.30901 0.080605 0.91" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="CameraFront_1"/>
-</joint>
-
-<joint name="CameraLeftMount" type="fixed">
-  <origin xyz="-0.21901 0.035605 0.91" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="CameraLeft_1"/>
-</joint>
-
-<joint name="CameraRightMount" type="fixed">
-  <origin xyz="-0.21901 0.125605 0.91" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="CameraRight_1"/>
-</joint>
-
-<joint name="CameraArmMount" type="fixed">
-  <origin xyz="0.020679 0.000144 0.0192" rpy="0 0 0"/>
-  <parent link="L6_1"/>
-  <child link="CameraArm_1"/>
-</joint>
-
-<joint name="gpsmount" type="fixed">
-  <origin xyz="-0.25401 0.080605 0.91" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="GPS_1"/>
-</joint>
-
--->
 
 </robot>

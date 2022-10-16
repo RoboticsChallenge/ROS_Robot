@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<robot name="ros_robot" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+
+<gazebo>
+    <plugin filename="libusv_gazebo_thrust_plugin.so" name="wamv_gazebo_thrust">
+      <cmdTimeout>1.0</cmdTimeout>
+      <publisherRate>100.0</publisherRate>
+      <robotNamespace>ros_robot</robotNamespace>
+      <thruster>
+        <!-- Required Parameters -->
+        <linkName>BackThrusterR_1</linkName>
+        <propJointName>BackThrusterRProp</propJointName>
+        <engineJointName>BackThrusterR</engineJointName>
+        <cmdTopic>thrusters/right_thrust_cmd</cmdTopic>
+        <angleTopic>thrusters/right_thrust_angle</angleTopic>
+        <enableAngle>True</enableAngle>
+        <!-- Optional Parameters -->
+        <mappingType>1</mappingType>
+        <maxCmd>1.0</maxCmd>
+        <maxForceFwd>250.0</maxForceFwd>
+        <maxForceRev>-100.0</maxForceRev>
+        <maxAngle>1.5707963267948966</maxAngle>
+      </thruster>  
+      <thruster>
+        <!-- Required Parameters -->
+        <linkName>BackThrusterL_1</linkName>
+        <propJointName>BackThrusterLProp</propJointName>
+        <engineJointName>BackThrusterL</engineJointName>
+        <cmdTopic>thrusters/left_thrust_cmd</cmdTopic>
+        <angleTopic>thrusters/left_thrust_angle</angleTopic>
+        <enableAngle>True</enableAngle>
+        <!-- Optional Parameters -->
+        <mappingType>1</mappingType>
+        <maxCmd>1.0</maxCmd>
+        <maxForceFwd>250.0</maxForceFwd>
+        <maxForceRev>-100.0</maxForceRev>
+        <maxAngle>1.5707963267948966</maxAngle>
+      </thruster>  
+
+      <thruster>
+        <!-- Required Parameters -->
+        <linkName>CenterThruster_1</linkName>
+        <propJointName>CenterThrusterProp</propJointName>
+        <engineJointName>CenterThruster</engineJointName>
+        <cmdTopic>thrusters/Center_thrust_cmd</cmdTopic>
+        <angleTopic>thrusters/Center_thrust_angle</angleTopic>
+        <enableAngle>True</enableAngle>
+        <!-- Optional Parameters -->
+        <mappingType>1</mappingType>
+        <maxCmd>1.0</maxCmd>
+        <maxForceFwd>100</maxForceFwd>
+        <maxForceRev>-100.0</maxForceRev>
+        <maxAngle>3.14</maxAngle>
+      </thruster>          
+    </plugin>
+  </gazebo>
+</robot>

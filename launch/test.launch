@@ -1,0 +1,25 @@
+<launch>
+
+  <arg name="x" default="0" />
+  <arg name="y" default="0" />
+  <arg name="z" default="-0.1" />
+  <arg name="P" default="0" />
+  <arg name="R" default="0" />
+  <arg name="Y" default="0" />
+
+  <param name="robot_description" command="$(find xacro)/xacro $(find ros_robot_description)/urdf/ros_robot.xacro"/>
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+        args="-x $(arg x) -y $(arg y) -z $(arg z)
+              -R $(arg R) -P $(arg P) -Y $(arg Y)
+              -param robot_description -urdf -model ros_robot"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find ros_robot_description)/worlds/testworld.world"/>
+    <arg name="paused" value="true"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+</launch>

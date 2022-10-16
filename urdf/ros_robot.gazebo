@@ -5,7 +5,7 @@
 <gazebo>
   <plugin name="control" filename="libgazebo_ros_control.so"/>
 </gazebo>
-
+<!--
 <gazebo>
   <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
     <commandTopic>cmd_vel</commandTopic>
@@ -15,7 +15,38 @@
     <robotBaseFrame>base_link</robotBaseFrame>
   </plugin>
 </gazebo>
-
+-->
+<gazebo>
+  <plugin filename="libusv_gazebo_dynamics_plugin.so" name="usv_dynamics_wamv_dynamics_plugin">
+    <bodyName>world_boat_link</bodyName>
+    <!-- Must be same as the ocean model!-->
+    <waterLevel>0.07</waterLevel>
+    <waterDensity>997.8</waterDensity>
+    <!-- Added mass -->
+    <xDotU>5.0</xDotU>
+    <yDotV>5.0</yDotV>
+    <nDotR>0</nDotR>
+    <!-- Linear and quadratic drag -->
+    <xU>51.3</xU> <!--20 Linear drag in the surge direction [N/(m/s)]-->
+    <xUU>72.4</xUU> <!--Quadratic drag in the surge direction [N/(m/s)^2]-->
+    <yV>40.0</yV> <!--20 Linear drag in the sway direction [N/(m/s)]-->
+    <yVV>0.0</yVV>
+    <zW>500.0</zW> <!--20 Linear drag in the heave direction [N/(m/s)]-->
+    <kP>50.0</kP> <!--20 -->
+    <mQ>50.0</mQ> <!--20 -->
+    <nR>40.0</nR> <!--400.0 Linear drag in the yaw direction [Nm/(rad/s)]-->
+    <nRR>0.0</nRR> <!--20.0 -->
+    <!-- General dimensions -->
+    <!--<boatArea>2.2</boatArea>-->
+    <hullRadius>0.213</hullRadius>
+    <boatWidth>0.4</boatWidth>
+    <boatLength>1</boatLength>
+    <!-- Length discretization, AKA, "N" -->
+    <length_n>2</length_n>
+    <!-- Wave model -->
+    <wave_model>ocean_waves</wave_model>
+  </plugin>
+</gazebo>
 
 <gazebo reference="base_link">
   <material>Gazebo/DarkGrey</material>
@@ -27,118 +58,12 @@
   -->
 </gazebo>
 
-<gazebo reference="CenterThrusterR_1">
-  <material>Gazebo/Red</material>
-  <mu1>0.02</mu1>
-  <mu2>0.02</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="CenterThrusterL_1">
-  <material>Gazebo/Red</material>
-  <mu1>0.02</mu1>
-  <mu2>0.02</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="BackThrusterR_1">
-  <material>Gazebo/Red</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="BackThrusterL_1">
-  <material>Gazebo/Red</material>
-  <mu1>0.02</mu1>
-  <mu2>0.02</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="JawL_1">
-  <material>Gazebo/SkyBlue</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="JawR_1">
-  <material>Gazebo/SkyBlue</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="L6_1">
-  <material>Gazebo/Orange</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="L5_1">
-  <material>Gazebo/Orange</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="L4_1">
-  <material>Gazebo/Orange</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="L3_1">
-  <material>Gazebo/Orange</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="L2_1">
-  <material>Gazebo/Orange</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="L1_1">
-  <material>Gazebo/Orange</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
 <gazebo reference="GarbageBot_1">
   <material>Gazebo/Orange</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
-<!--
-<gazebo reference="CameraLeft_1">
-  <material>Gazebo/Green</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="CameraRight_1">
-  <material>Gazebo/Green</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
--->
-<gazebo reference="GPS_1">
-  <material>Gazebo/Green</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
 
 
 </robot>

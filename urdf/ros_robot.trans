@@ -89,4 +89,48 @@
   </actuator>
 </transmission>
 
+<transmission name="CenterThrusterLProp_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="CenterThrusterLProp">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="CenterThrusterLProp_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="CenterThrusterRProp_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="CenterThrusterRProp">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="CenterThrusterRProp_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="BackThrusterRProp_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="BackThrusterRProp">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="BackThrusterRProp_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="BackThrusterLProp_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="BackThrusterLProp">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="BackThrusterLProp_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
 </robot>

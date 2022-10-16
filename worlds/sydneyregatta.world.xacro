@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<!-- World containing only sydneyregatta model -->
+<sdf version="1.6" xmlns:xacro="http://ros.org/wiki/xacro">
+  <world name="sydneyregatta">
+    <xacro:include filename="$(find ros_robot_description)/worlds/sydneyregatta.xacro" />
+    <xacro:sydneyregatta />
+    <!--Waves-->
+    <xacro:include filename="$(find wave_gazebo)/world_models/ocean_waves/model.xacro"/>
+    <xacro:ocean_waves scale="2.5"/>
+  </world>
+</sdf>
