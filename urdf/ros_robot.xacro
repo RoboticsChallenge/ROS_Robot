@@ -66,6 +66,7 @@
 <link name="world_boat_link"/>
 
 <joint name="world_boat_joint" type="fixed">
+  <origin xyz="0 0 0" rpy="0 0 3.14"/>
   <parent link="world_boat_link"/>
   <child link="base_link"/>
 </joint>

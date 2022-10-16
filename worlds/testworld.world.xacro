@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<sdf version="1.6" xmlns:xacro="http://ros.org/wiki/xacro">
+  <world name="testworld">
+    <xacro:include filename="$(find ros_robot_description)/worlds/testworld.xacro" />
+    <xacro:testworld />
+    <!--Waves-->
+    <xacro:include filename="$(find wave_gazebo)/world_models/ocean_waves/model.xacro"/>
+    <xacro:ocean_waves scale="2.5"/>
+  </world>
+</sdf>

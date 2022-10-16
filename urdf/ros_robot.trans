@@ -89,23 +89,12 @@
   </actuator>
 </transmission>
 
-<transmission name="CenterThrusterLProp_tran">
+<transmission name="CenterThrusterProp_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="CenterThrusterLProp">
+  <joint name="CenterThrusterProp">
     <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
   </joint>
-  <actuator name="CenterThrusterLProp_actr">
-    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-    <mechanicalReduction>1</mechanicalReduction>
-  </actuator>
-</transmission>
-
-<transmission name="CenterThrusterRProp_tran">
-  <type>transmission_interface/SimpleTransmission</type>
-  <joint name="CenterThrusterRProp">
-    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-  </joint>
-  <actuator name="CenterThrusterRProp_actr">
+  <actuator name="CenterThrusterProp_actr">
     <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
     <mechanicalReduction>1</mechanicalReduction>
   </actuator>

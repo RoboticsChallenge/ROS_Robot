@@ -188,7 +188,7 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 # install(PROGRAMS
-#   scripts/my_python_script
+#   scripts/object_tracker
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
 
@@ -215,6 +215,7 @@ include_directories(
 
 xacro_add_files(
   worlds/sydneyregatta.world.xacro
+  worlds/testworld.world.xacro
   INSTALL DESTINATION worlds
 )
 install(DIRECTORY worlds/
@@ -227,7 +228,7 @@ install(DIRECTORY urdf/
 catkin_install_python(PROGRAMS
     nodes/twist2thrust.py
     nodes/key2thrust_angle.py
-    scripts/generate_worlds.py
+    scripts/object_tracker.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 #############

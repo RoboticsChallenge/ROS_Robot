@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<!-- Macro to insert the sydneyregatta into the world -->
+<world xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="testworld">
+    <scene>
+      <sky>
+        <clouds>
+          <speed>12</speed>
+        </clouds>
+      </sky>
+      <grid>0</grid>
+      <origin_visual>0</origin_visual>
+    </scene>
+    <!-- Estimated latitude/longitude of sydneyregatta
+	 from satellite imagery -->
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <world_frame_orientation>ENU</world_frame_orientation>
+      <latitude_deg>-33.724223</latitude_deg>
+      <longitude_deg>150.679736</longitude_deg>
+      <elevation>0.0</elevation>
+      <heading_deg>0.0</heading_deg>
+    </spherical_coordinates>
+
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose>-7.4 -9 7 0.0 0.44 0.6</pose>
+        <view_controller>orbit</view_controller>
+      </camera>
+      <!--<plugin name="GUITaskWidget" filename="libgui_task_widget.so"/>-->
+    </gui>
+
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <include>
+      <name>crocodile_buoy</name>
+      <pose>10 2 0 0 0 0</pose>
+      <uri>model://crocodile_buoy</uri>
+    </include>
+
+    <include>
+      <name>platypus_buoy</name>
+      <pose>10 0 0 0 0 0</pose>
+      <uri>model://platypus_buoy</uri>
+    </include>
+
+    <include>
+      <name>turtle_buoy</name>
+      <pose>12 -2 0 0 0 0</pose>
+      <uri>model://turtle_buoy</uri>
+    </include>
+
+  </xacro:macro>
+</world>

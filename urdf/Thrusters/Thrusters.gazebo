@@ -22,6 +22,7 @@
         <maxForceRev>-100.0</maxForceRev>
         <maxAngle>1.5707963267948966</maxAngle>
       </thruster>  
+      
       <thruster>
         <!-- Required Parameters -->
         <linkName>BackThrusterL_1</linkName>
