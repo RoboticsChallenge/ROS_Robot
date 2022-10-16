@@ -9,11 +9,11 @@
   - link to real location https://goo.gl/maps/6DaRK1RNaAh5Uh5XA 
 
 ### setup GIT in terminal VSCODE
-git config --global user.email yourname@domain.com
-git config --global user.name "First Last"
+  - git config --global user.email yourname@domain.com
+  - git config --global user.name "First Last"
 
 ### Added Dependencies
-wave_gazebo_plugins
-usv_gazebo_plugins
+  - wave_gazebo_plugins
+  - usv_gazebo_plugins
 
 
