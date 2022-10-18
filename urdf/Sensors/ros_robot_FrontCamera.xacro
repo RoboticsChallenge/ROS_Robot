@@ -37,7 +37,7 @@
 <link name="CameraFront_link_optical"> </link>
 
 <gazebo reference="CameraFront_1">
-        <sensor name="camera1" type="camera">
+        <sensor name="cameraFront" type="camera">
             <pose> 0 0 0 0 0 0 </pose>
             <visualize>${visual_camera}</visualize>
             <update_rate>10</update_rate>
@@ -55,13 +55,14 @@
                 </clip>
             </camera>
             
-            <plugin name="camera_controller_front" filename="libgazebo_ros_camera.so">
-                <imageTopicName>image_raw/camera_front</imageTopicName>
-                <cameraInfoTopicName>camera_info/camera_front</cameraInfoTopicName>
+            <plugin name="camera_front_controller" filename="libgazebo_ros_camera.so">
+                <cameraName>ros_robot/camera_front</cameraName>
                 <frame_name>CameraFront_link_optical</frame_name>
+                <imageTopicName>image_raw</imageTopicName>
+                <cameraInfoTopicName>camera_info</cameraInfoTopicName>
             </plugin>
         </sensor>
-</gazebo>
+</gazebo>         
 
 <gazebo reference="CameraFront_1">
   <material>Gazebo/Green</material>

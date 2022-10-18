@@ -15,6 +15,7 @@
     </geometry>
     <material name="paint_enamel_glossy_red"/>
   </visual>
+
   <collision>
     <origin xyz="-0.513675 -0.21201 -0.279079" rpy="0 0 0"/>
     <geometry>
@@ -57,6 +58,8 @@
   <parent link="BackThrusterR_1"/>
   <child link="BackPropellerR_1"/>
   <axis xyz="1.0 0.0 0.0"/>
+  <limit effort="100" velocity="100"/>
+  <dynamics damping="0.05" friction="0.05"/>
 </joint>
 
 <gazebo reference="BackPropellerR_1">

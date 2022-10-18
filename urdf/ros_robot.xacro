@@ -11,6 +11,9 @@
 <xacro:include filename="$(find ros_robot_description)/urdf/Sensors/ros_robot_RightCamera.xacro" />
 <xacro:include filename="$(find ros_robot_description)/urdf/Sensors/ros_robot_BackCamera.xacro" />
 <xacro:include filename="$(find ros_robot_description)/urdf/Sensors/ros_robot_ArmCamera.xacro" />
+
+<xacro:include filename="$(find ros_robot_description)/urdf/Sensors/ros_robot_rangingSensor.xacro"/>
+
 <xacro:include filename="$(find ros_robot_description)/urdf/Sensors/ros_robot_GpsSensor.xacro" />
 
 <xacro:include filename="$(find ros_robot_description)/urdf/Thrusters/CenterThruster.xacro" />

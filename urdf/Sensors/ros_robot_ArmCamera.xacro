@@ -55,10 +55,11 @@
                 </clip>
             </camera>
             
-            <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+            <plugin name="camera_arm_controller" filename="libgazebo_ros_camera.so">
+                <cameraName>ros_robot/camera_arm</cameraName>
                 <frame_name>CameraArm_link_optical</frame_name>
-                <imageTopicName>image_raw/camera_Arm</imageTopicName>
-                <cameraInfoTopicName>camera_info/camera_Arm</cameraInfoTopicName>
+                <imageTopicName>image_raw</imageTopicName>
+                <cameraInfoTopicName>camera_info</cameraInfoTopicName>
             </plugin>
         </sensor>
 </gazebo>

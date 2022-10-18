@@ -22,10 +22,10 @@
   <arg name="R" default="0" />
   <arg name="Y" default="1.57" />
 
-  <!-- If true, show non-competition ROS topics (/gazebo/model_states, /vrx/debug/wind/direction, etc.)-->
+  <!-- If true, show non-competition ROS topics (/gazebo/model_states, /vrx/debug/wind/direction, etc.)
   <arg name="non_competition_mode" default="true"/>
   <arg name="enable_ros_network" value="$(arg non_competition_mode)"/>
-  <env name="VRX_DEBUG" value="$(arg non_competition_mode)"/>
+  <env name="VRX_DEBUG" value="$(arg non_competition_mode)"/>-->
   <!--<env unless="$(arg non_competition_mode)" name="GAZEBO_MODEL_PATH" value="$(find ros_robot_description)/models:$(optenv GAZEBO_MODEL_PATH)"/>-->
 
   <!-- Start Gazebo with the world file -->
