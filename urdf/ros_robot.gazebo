@@ -34,7 +34,7 @@
     <zW>20.0</zW> <!--20 Linear drag in the heave(up-down) direction [N/(m/s)]-->
     <kP>20.0</kP> <!--20 -->
     <mQ>20.0</mQ> <!--20 -->
-    <nR>400.0</nR> <!--400.0 Linear drag in the yaw direction [Nm/(rad/s)]-->
+    <nR>40.0</nR> <!--400.0 Linear drag in the yaw direction [Nm/(rad/s)]-->
     <nRR>0.0</nRR> <!--20.0 -->
     <!-- General dimensions -->
     <!--<boatArea>2.2</boatArea>-->
