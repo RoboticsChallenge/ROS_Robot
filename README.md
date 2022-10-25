@@ -1,6 +1,8 @@
 # ROS_Robot
 ## name of pack is ros_robot_description
   - Must be running ubuntu 20.04 and Ros Noetic version(latest)
+  - VMware image
+  https://drive.google.com/file/d/1XncfXQEo2zbeuM8Cr98CLH4NM8jwrtkA/view?usp=sharing
 
 ### World 
   - World created by https://github.com/osrf/vrx 
