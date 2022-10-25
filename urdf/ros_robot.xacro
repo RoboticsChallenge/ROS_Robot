@@ -6,15 +6,14 @@
 <xacro:include filename="$(find ros_robot_description)/urdf/ros_robot.gazebo" />
 
 <xacro:property name="visual_camera" value="false" />
-<xacro:include filename="$(find ros_robot_description)/urdf/Sensors/ros_robot_FrontCamera.xacro" />
-<xacro:include filename="$(find ros_robot_description)/urdf/Sensors/ros_robot_LeftCamera.xacro" />
-<xacro:include filename="$(find ros_robot_description)/urdf/Sensors/ros_robot_RightCamera.xacro" />
-<xacro:include filename="$(find ros_robot_description)/urdf/Sensors/ros_robot_BackCamera.xacro" />
-<xacro:include filename="$(find ros_robot_description)/urdf/Sensors/ros_robot_ArmCamera.xacro" />
+<xacro:include filename="$(find ros_robot_description)/urdf/Sensors/FrontCamera.xacro" />
+<xacro:include filename="$(find ros_robot_description)/urdf/Sensors/LeftCamera.xacro" />
+<xacro:include filename="$(find ros_robot_description)/urdf/Sensors/RightCamera.xacro" />
+<xacro:include filename="$(find ros_robot_description)/urdf/Sensors/BackCamera.xacro" />
+<xacro:include filename="$(find ros_robot_description)/urdf/Sensors/ArmCamera.xacro" />
 
-<xacro:include filename="$(find ros_robot_description)/urdf/Sensors/ros_robot_rangingSensor.xacro"/>
-
-<xacro:include filename="$(find ros_robot_description)/urdf/Sensors/ros_robot_GpsSensor.xacro" />
+<xacro:include filename="$(find ros_robot_description)/urdf/Sensors/imu_sensor.xacro"/>
+<xacro:include filename="$(find ros_robot_description)/urdf/Sensors/GpsSensor.xacro" />
 
 <xacro:include filename="$(find ros_robot_description)/urdf/Thrusters/CenterThruster.xacro" />
 <xacro:include filename="$(find ros_robot_description)/urdf/Thrusters/BackThrusterRight.xacro" />
