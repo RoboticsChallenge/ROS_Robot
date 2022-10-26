@@ -25,7 +25,7 @@
 
 <link name="base_link">
   <inertial>
-    <origin xyz="0.044354227312182234 0.08057379028516376 0.21043007492326804" rpy="0 0 0"/>
+    <origin xyz="-0.040426671996312426 0.00016559498592984233 0.209559986591449" rpy="0 0 0"/>
     <mass value="110"/>
     <inertia ixx="0.1" iyy="0.1" izz="0.1" ixy="0" iyz="0" ixz="0"/>
   </inertial>
@@ -46,19 +46,19 @@
 
 <link name="GarbageBot_1">
   <inertial>
-    <origin xyz="0.004156095453495663 3.839859988474803e-06 0.015000000000000034" rpy="0 0 0"/>
+    <origin xyz="-0.00415631769494771 -3.4033212155202414e-06 0.015000000000000027" rpy="0 0 0"/>
     <mass value="11"/>
     <inertia ixx="0.038479" iyy="0.059958" izz="0.096695" ixy="2e-06" iyz="-0.0" ixz="-0.0"/>
   </inertial>
   <visual>
-    <origin xyz="0.03401 -0.080602 -0.045" rpy="0 0 0"/>
+    <origin xyz="-0.034008 -0.000106 -0.045" rpy="0 0 0"/>
     <geometry>
       <mesh filename="package://ros_robot_description/meshes/GarbageBot_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="paint_enamel_glossy_yellow_1"/>
   </visual>
   <collision>
-    <origin xyz="0.03401 -0.080602 -0.045" rpy="0 0 0"/>
+    <origin xyz="-0.034008 -0.000106 -0.045" rpy="0 0 0"/>
     <geometry>
       <mesh filename="package://ros_robot_description/meshes/GarbageBot_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
@@ -68,7 +68,7 @@
 <link name="world_boat_link"/>
 
 <joint name="world_boat_joint" type="fixed">
-  <origin xyz="0 0 0" rpy="0 0 3.14"/>
+  <origin xyz="0 0 0" rpy="0 0 0"/>
   <parent link="world_boat_link"/>
   <child link="base_link"/>
 </joint>

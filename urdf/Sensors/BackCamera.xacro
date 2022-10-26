@@ -3,19 +3,19 @@
 
 <link name="CameraBack_1">
   <inertial>
-    <origin xyz="3.923572550745824e-07 2.7456535542369487e-07 0.03499999999999981" rpy="0 0 0"/>
+    <origin xyz="3.8540129290720593e-07 1.6197341744270761e-07 0.03499999999999992" rpy="0 0 0"/>
     <mass value="0.003"/>
     <inertia ixx="0.000238" iyy="0.000194" izz="7.3e-05" ixy="-0.0" iyz="0.0" ixz="0.0"/>
   </inertial>
   <visual>
-    <origin xyz="0.20901 -0.080605 -0.91" rpy="0 0 0"/>
+    <origin xyz="-0.209007 -0.000103 -0.91" rpy="0 0 0"/>
     <geometry>
       <mesh filename="package://ros_robot_description/meshes/CameraBack_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="paint_enamel_glossy_red_1"/>
   </visual>
   <collision>
-    <origin xyz="0.20901 -0.080605 -0.91" rpy="0 0 0"/>
+    <origin xyz="-0.209007 -0.000103 -0.91" rpy="0 0 0"/>
     <geometry>
       <mesh filename="package://ros_robot_description/meshes/CameraBack_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
@@ -23,7 +23,7 @@
 </link>
 
 <joint name="CameraBackMount" type="fixed">
-  <origin xyz="-0.20901 0.080605 0.91" rpy="0 0 0"/>
+  <origin xyz="0.209007 0.000103 0.91" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="CameraBack_1"/>
 </joint>

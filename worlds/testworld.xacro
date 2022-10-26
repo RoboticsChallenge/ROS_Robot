@@ -36,7 +36,7 @@
     </include>
     <include>
       <name>crocodile_buoy</name>
-      <pose>10 2 0 0 0 0</pose>
+      <pose>0 1 0 0 0 0</pose>
       <uri>model://crocodile_buoy</uri>
     </include>
 

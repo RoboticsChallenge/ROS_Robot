@@ -16,16 +16,23 @@
       <inertia ixx="0.000083" ixy="0.0" ixz="0.0" iyy="0.000083" iyz="0.0" izz="0.0125"/>
     </inertial>
   </link>
-  <joint name="imu_joint" type="revolute">
-    <axis xyz="0 0 0"/>
-    <limit effort="1000.0" lower="0.0" upper="0" velocity="0"/>
+  
+  <joint name="imu_joint" type="fixed">
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <parent link="base_link"/>
     <child link="imu_link"/>
   </joint>
+
+  <joint name="magnometer_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="imu_link"/>
+    <child link="magnometer_link"/>
+  </joint>
+  <link name="magnometer_link"> </link>
+
   <gazebo>
-    <plugin filename="libhector_gazebo_ros_imu.so" name="imu_plugin_imu_wamv">
-      <updateRate>15</updateRate>
+    <plugin filename="libhector_gazebo_ros_imu.so" name="imu_plugin">
+      <updateRate>20</updateRate>
       <bodyName>imu_link</bodyName>
       <topicName>sensors/imu/data</topicName>
       <serviceName>sensors/imu_service</serviceName>
@@ -47,4 +54,18 @@
     </plugin>
   </gazebo>
 
+  <gazebo>
+    <plugin filename="libhector_gazebo_ros_magnetic.so" name="magnetometer">
+      <updateRate>20.0</updateRate>
+      <bodyname>magnometer_link</bodyname>
+      <topicName>sensors/magnometer</topicName>
+      <referenceHeading>72.0</referenceHeading>
+      <!--<magnitude>5.7065E-5</magnitude>-->
+      <declination>12</declination>
+      <inclination>64</inclination>
+      <offset>0 0 0</offset>
+      <driftFrequency>0 0 0</driftFrequency>
+      <gaussianNoise>0 0 0</gaussianNoise>
+    </plugin>
+  </gazebo>
 </robot>

@@ -3,19 +3,19 @@
 
 <link name="CameraArm_1">
   <inertial>
-    <origin xyz="0.0032135726825279765 2.2141618967422283e-05 0.0038301783339352857" rpy="0 0 0"/>
+    <origin xyz="-0.0032137949239799957 -2.2705080194432292e-05 0.0038301783339353968" rpy="0 0 0"/>
     <mass value="0.003"/>
     <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="0.0" iyz="-0.0" ixz="-0.0"/>
   </inertial>
   <visual>
-    <origin xyz="-0.579297 -0.113045 -0.741936" rpy="0 0 0"/>
+    <origin xyz="0.579299 0.032336 -0.741936" rpy="0 0 0"/>
     <geometry>
       <mesh filename="package://ros_robot_description/meshes/CameraArm_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="paint_enamel_glossy_red_1"/>
   </visual>
   <collision>
-    <origin xyz="-0.579297 -0.113045 -0.741936" rpy="0 0 0"/>
+    <origin xyz="0.579299 0.032336 -0.741936" rpy="0 0 0"/>
     <geometry>
       <mesh filename="package://ros_robot_description/meshes/CameraArm_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
@@ -23,7 +23,7 @@
 </link>
 
 <joint name="CameraArmMount" type="fixed">
-  <origin xyz="0.020679 0.000144 0.0192" rpy="0 0.523599 0"/>
+  <origin xyz="-0.020679 -0.000143 0.0192" rpy="0 0 0"/>
   <parent link="L6_1"/>
   <child link="CameraArm_1"/>
 </joint>
