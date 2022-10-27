@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from importlib.machinery import DEBUG_BYTECODE_SUFFIXES
 from queue import Empty
 from attr import NOTHING
 import roslib
@@ -11,12 +12,14 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 import numpy as np
 
+DEBUG_HSV = False
+
 class image_converter:
 
   def __init__(self):
     self.bridge = CvBridge()
     self.image_sub = rospy.Subscriber("ros_robot/camera_front/image_raw",Image,self.callback)
-    #self.makeTrackBars() #for debugging HSV
+    if DEBUG_HSV: self.makeTrackBars() #for debugging HSV
     
   def callback(self,data):
     try:
@@ -49,6 +52,12 @@ class image_converter:
       upper = np.array([h_max,s_max,v_max])
       mask = cv2.inRange(image,lower,upper)
       return mask
+  def GetBearing(self,cx,xy):
+    cameraFoV = 90 #fov in degrees
+    picturewidth = 1240
+    pix2deg = (cameraFoV/2)/(picturewidth/2)
+    bearing = (cx-(picturewidth/2))*pix2deg
+    return bearing
   def imageProccessing(self,image):
      # lower boundary RED color range values; Hue (0 - 10)
       lower1 = np.array([93, 0, 96])
@@ -65,12 +74,17 @@ class image_converter:
               cx = int(M['m10']/M['m00']) #finds center of mystical beeing
               cy = int(M['m01']/M['m00']) #finds center of mystical beeing
               cv2.circle(image, (cx, cy), 7, (255, 255, 255), -1)
+              bearing = self.GetBearing(cx,cy)
+              cv2.putText(image,f'bearing: {bearing}',(cx,cy+10), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
               cv2.drawContours(image, c, -1, (0,255,0), 1)
 
       #Hori = np.concatenate((image, result), axis=1)
-      #x = self.hsvTweaker(hsv) #for HSV debugging
-      #cv2.imshow("Image w", imageblur)
-      cv2.imshow("Image window", image)
+      if DEBUG_HSV:
+        x = self.hsvTweaker(hsv) #for HSV debugging
+        cv2.imshow("HSV DEBUGGER", x)
+      else:
+        cv2.imshow("Image window", image)
+
       cv2.waitKey(3)
 
 def main(args):
