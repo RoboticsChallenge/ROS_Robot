@@ -3,63 +3,77 @@
 
 <link name="CameraRight_1">
   <inertial>
-    <origin xyz="3.8540129332353956e-07 1.6197341751178485e-07 0.03499999999999992" rpy="0 0 0"/>
+    <origin xyz="3.8540129332353956e-07 1.6197341752566263e-07 0.03500000000000014" rpy="0 0 0"/>
     <mass value="0.003"/>
     <inertia ixx="0.000194" iyy="0.000238" izz="7.3e-05" ixy="0.0" iyz="-0.0" ixz="0.0"/>
   </inertial>
+  <!--
   <visual>
-    <origin xyz="-0.219007 0.044897 -0.91" rpy="0 0 0"/>
+    <origin xyz="-0.219007 -0.045103 -0.91" rpy="0 0 0"/>
     <geometry>
       <mesh filename="package://ros_robot_description/meshes/CameraRight_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="paint_enamel_glossy_red_1"/>
   </visual>
   <collision>
-    <origin xyz="-0.219007 0.044897 -0.91" rpy="0 0 0"/>
+    <origin xyz="-0.219007 -0.045103 -0.91" rpy="0 0 0"/>
     <geometry>
       <mesh filename="package://ros_robot_description/meshes/CameraRight_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
+  -->
 </link>
 
 <joint name="CameraRightMount" type="fixed">
-  <origin xyz="0.219007 0.045103 0.91" rpy="0 0 0"/>
+ <!--<origin xyz="0.219007 -0.044897 0.91" rpy="0 0 -1.57"/>--> 
+  <origin xyz="0.17 -0.044897 0.91" rpy="0 0.4 -1.57"/>
   <parent link="base_link"/>
   <child link="CameraRight_1"/>
 </joint>
 
 <joint name="CameraRight_optical_joint" type="fixed">
-  <origin xyz="0 0 0" rpy="-1.57079632679 0 -1.57079632679"/>
+  <origin xyz="0 0 -0.05" rpy="-1.57079632679 0 -1.57079632679"/>
   <parent link="CameraRight_1"/>
-  <child link="CameraRight_link_optical"/>
+  <child link="CameraRight_right_link_optical"/>
 </joint>
 
-<link name="CameraRight_link_optical"> </link>
-
+<link name="CameraRight_right_link_optical"> </link>
+<!---->
 <gazebo reference="CameraRight_1">
-        <sensor name="cameraRight" type="camera">
+        <sensor name="cameraRight" type="depth">
             <pose> 0 0 0 0 0 0 </pose>
-            <visualize>${visual_camera}</visualize>
-            <update_rate>10</update_rate>
+            <!--<visualize>${visual_camera}</visualize>-->
+            <always_on>1</always_on>
+            <visualize>true</visualize>  
+              <camera>
+                  <horizontal_fov>2</horizontal_fov>  
+                  <image>
+                      <width>640</width>
+                      <height>480</height>
+                      <format>L8</format>
+                      <!--<format>R8G8B8</format>-->
+                  </image>
+                  <depth_camera>
 
-            <camera>
-                <horizontal_fov>1.3962634</horizontal_fov>
-                <image>
-                    <format>R8G8B8</format>
-                    <width>640</width>
-                    <height>480</height>
-                </image>
-                <clip>
-                    <near>0.05</near>
-                    <far>200</far>
-                </clip>
-            </camera>
-            
-            <plugin name="camera_right_controller" filename="libgazebo_ros_camera.so">
-                <cameraName>ros_robot/camera_right</cameraName>
-                <frame_name>CameraRight_link_optical</frame_name>
-                <imageTopicName>image_raw</imageTopicName>
-                <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+                  </depth_camera>
+                  <clip>
+                      <near>0.01</near>
+                      <far>100</far>
+                  </clip>
+              </camera>
+            <plugin name="kinect_plugin" filename="libgazebo_ros_openni_kinect.so">
+              <baseline>0.1</baseline>
+              <alwaysOn>true</alwaysOn>
+              <updateRate>10</updateRate>
+              <cameraName>right_depth</cameraName>
+              <imageTopicName>sensors/right_depth/image_raw</imageTopicName>
+              <cameraInfoTopicName>sensors/right_depth/camera_info</cameraInfoTopicName>
+              <depthImageTopicName>sensors/right_depth/image_raw_depth</depthImageTopicName>
+              <depthImageInfoTopicName>sensors/right_depth/camera_info</depthImageInfoTopicName>
+              <pointCloudTopicName>sensors/right_depth/3d_cloud</pointCloudTopicName>
+              <frameName>CameraRight_right_link_optical</frameName>
+              <pointCloudCutoff>0.3</pointCloudCutoff>
+             <!--<pointCloudCutoffMax>5.0</pointCloudCutoffMax>--> 
             </plugin>
         </sensor>
 </gazebo>

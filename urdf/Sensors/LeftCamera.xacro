@@ -1,29 +1,32 @@
 <?xml version="1.0" ?>
 <robot name="ros_robot" xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
+
 <link name="CameraLeft_1">
   <inertial>
-    <origin xyz="3.8540129332353956e-07 1.6197341752566263e-07 0.03500000000000014" rpy="0 0 0"/>
+    <origin xyz="3.8540129332353956e-07 1.6197341751178485e-07 0.03499999999999992" rpy="0 0 0"/>
     <mass value="0.003"/>
     <inertia ixx="0.000194" iyy="0.000238" izz="7.3e-05" ixy="0.0" iyz="-0.0" ixz="0.0"/>
   </inertial>
+  <!--
   <visual>
-    <origin xyz="-0.219007 -0.045103 -0.91" rpy="0 0 0"/>
+    <origin xyz="-0.219007 0.044897 -0.91" rpy="0 0 0"/>
     <geometry>
       <mesh filename="package://ros_robot_description/meshes/CameraLeft_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="paint_enamel_glossy_red_1"/>
   </visual>
   <collision>
-    <origin xyz="-0.219007 -0.045103 -0.91" rpy="0 0 0"/>
+    <origin xyz="-0.219007 0.044897 -0.91" rpy="0 0 0"/>
     <geometry>
       <mesh filename="package://ros_robot_description/meshes/CameraLeft_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
+  -->
 </link>
 
 <joint name="CameraLeftMount" type="fixed">
-  <origin xyz="0.219007 -0.044897 0.91" rpy="0 0 0"/>
+  <origin xyz="0.17 0.045103 0.91" rpy="0 0.4 1.57079632679"/>
   <parent link="base_link"/>
   <child link="CameraLeft_1"/>
 </joint>
@@ -31,37 +34,48 @@
 <joint name="CameraLeft_optical_joint" type="fixed">
   <origin xyz="0 0 0" rpy="-1.57079632679 0 -1.57079632679"/>
   <parent link="CameraLeft_1"/>
-  <child link="CameraLeft_link_optical"/>
+  <child link="CameraLeft_left_link_optical"/>
 </joint>
 
-<link name="CameraLeft_link_optical"> </link>
-<!---->
+<link name="CameraLeft_left_link_optical"> </link>
+
 <gazebo reference="CameraLeft_1">
-  <plugin name="camera_left_controller" filename="libgazebo_ros_openni_kinect.so">
-    <baseline>0.2</baseline>
-    <alwaysOn>true</alwaysOn>
-    <!-- Keep this zero, update_rate in the parent <sensor> tag
-        will control the frame rate. -->
-    <updateRate>20.0</updateRate>
-    <cameraName>camera_ir</cameraName>
-    <imageTopicName>/camera/color/image_raw</imageTopicName>
-    <cameraInfoTopicName>/camera/color/camera_info</cameraInfoTopicName>
-    <depthImageTopicName>/camera/depth/image_raw</depthImageTopicName>
-    <depthImageCameraInfoTopicName>/camera/depth/camera_info</depthImageCameraInfoTopicName>
-    <pointCloudTopicName>/camera/depth/points</pointCloudTopicName>
-    <frameName>CameraLeft_link_optical</frameName>
-    <pointCloudCutoff>0.05</pointCloudCutoff>
-    <distortionK1>0</distortionK1>
-    <distortionK2>0</distortionK2>
-    <distortionK3>0</distortionK3>
-    <distortionT1>0</distortionT1>
-    <distortionT2>0</distortionT2>
-    <CxPrime>0</CxPrime>
-    <Cx>0</Cx>
-    <Cy>0</Cy>
-    <focalLength>0</focalLength>
-    <hackBaseline>0</hackBaseline>
-  </plugin>
+        <sensor name="cameraLeft" type="depth">
+            <pose> 0 0 0 0 0 0 </pose>
+            <!--<visualize>${visual_camera}</visualize>-->
+            <always_on>1</always_on>
+            <visualize>true</visualize>  
+              <camera>
+                  <horizontal_fov>2</horizontal_fov>  
+                  <image>
+                      <width>640</width>
+                      <height>480</height>
+                      <format>L8</format>
+                      <!--<format>R8G8B8</format>-->
+                  </image>
+                  <depth_camera>
+
+                  </depth_camera>
+                  <clip>
+                      <near>0.01</near>
+                      <far>100</far>
+                  </clip>
+              </camera>
+            <plugin name="kinect_plugin" filename="libgazebo_ros_openni_kinect.so">
+              <baseline>0.1</baseline>
+              <alwaysOn>true</alwaysOn>
+              <updateRate>10</updateRate>
+              <cameraName>Left_depth</cameraName>
+              <imageTopicName>sensors/Left_depth/image_raw</imageTopicName>
+              <cameraInfoTopicName>sensors/Left_depth/camera_info</cameraInfoTopicName>
+              <depthImageTopicName>sensors/Left_depth/image_raw_depth</depthImageTopicName>
+              <depthImageInfoTopicName>sensors/Left_depth/camera_info</depthImageInfoTopicName>
+              <pointCloudTopicName>sensors/Left_depth/3d_cloud</pointCloudTopicName>
+              <frameName>CameraLeft_left_link_optical</frameName>
+              <pointCloudCutoff>0.4</pointCloudCutoff>
+              <pointCloudCutoffMax>3.0</pointCloudCutoffMax>-
+            </plugin>
+        </sensor>
 </gazebo>
 
 <gazebo reference="CameraLeft_1">
