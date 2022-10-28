@@ -32,7 +32,7 @@
 
   <gazebo>
     <plugin filename="libhector_gazebo_ros_imu.so" name="imu_plugin">
-      <updateRate>20</updateRate>
+      <updateRate>100</updateRate>
       <bodyName>imu_link</bodyName>
       <topicName>sensors/imu/data</topicName>
       <serviceName>sensors/imu_service</serviceName>
@@ -60,9 +60,9 @@
       <bodyname>magnometer_link</bodyname>
       <topicName>sensors/magnometer</topicName>
       <referenceHeading>72.0</referenceHeading>
-      <!--<magnitude>5.7065E-5</magnitude>-->
-      <declination>12</declination>
-      <inclination>64</inclination>
+      <magnitude>5.7065E-5</magnitude>
+      <declination>12.3</declination>
+      <inclination>64.2</inclination>
       <offset>0 0 0</offset>
       <driftFrequency>0 0 0</driftFrequency>
       <gaussianNoise>0 0 0</gaussianNoise>

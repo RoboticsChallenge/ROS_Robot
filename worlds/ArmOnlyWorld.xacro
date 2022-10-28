@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<!-- Macro to insert the sydneyregatta into the world -->
+<world xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="testworld">
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+  </xacro:macro>
+</world>

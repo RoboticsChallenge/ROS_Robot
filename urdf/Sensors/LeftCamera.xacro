@@ -73,7 +73,7 @@
               <pointCloudTopicName>sensors/Left_depth/3d_cloud</pointCloudTopicName>
               <frameName>CameraLeft_left_link_optical</frameName>
               <pointCloudCutoff>0.4</pointCloudCutoff>
-              <pointCloudCutoffMax>3.0</pointCloudCutoffMax>-
+              <pointCloudCutoffMax>4.0</pointCloudCutoffMax>-
             </plugin>
         </sensor>
 </gazebo>

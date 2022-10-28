@@ -1,5 +1,25 @@
 <?xml version="1.0" ?>
 <robot name="ros_robot" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+<link name="ArmBase_1">
+  <inertial>
+    <origin xyz="0.0011454041878000698 0.0011459188982486657 0.030935981147480862" rpy="0 0 0"/>
+    <mass value="23.097311942049508"/>
+    <inertia ixx="0.093308" iyy="0.093308" izz="0.170178" ixy="0.002057" iyz="-0.000107" ixz="-0.000107"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.285941 -0.000104 -0.346" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://ros_robot_description/meshes/ArmBase_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="paint_enamel_glossy_black"/>
+  </visual>
+  <collision>
+    <origin xyz="0.285941 -0.000104 -0.346" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://ros_robot_description/meshes/ArmBase_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
 
 <link name="JawL_1">
   <inertial>
@@ -228,12 +248,18 @@
 </joint>
 
 <joint name="L1" type="revolute">
-  <origin xyz="-0.285941 0.000104 0.4306" rpy="0 0 0"/>
-  <parent link="base_link"/>
+  <origin xyz="0.0 0.0 0.0856" rpy="0 0 0"/>
+  <parent link="ArmBase_1"/>
   <child link="L1_1"/>
   <axis xyz="0.0 0.0 1.0"/>
-
   <limit upper="2.181662" lower="-2.181662" effort="100" velocity="100"/>
 </joint>
+
+<joint name="ArmBaseLink" type="fixed">
+  <origin xyz="-0.285941 0.000104 0.346" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="ArmBase_1"/>
+</joint>
+
 
 </robot>

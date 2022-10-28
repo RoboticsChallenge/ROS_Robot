@@ -61,7 +61,7 @@
                       <far>100</far>
                   </clip>
               </camera>
-            <plugin name="kinect_plugin" filename="libgazebo_ros_openni_kinect.so">
+            <plugin name="kinect_plugin2" filename="libgazebo_ros_openni_kinect.so">
               <baseline>0.1</baseline>
               <alwaysOn>true</alwaysOn>
               <updateRate>10</updateRate>
