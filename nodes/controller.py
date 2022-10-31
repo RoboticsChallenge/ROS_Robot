@@ -5,7 +5,7 @@ import math
 from math import sin, asin, cos, acos, tan, atan, atan2, exp, sqrt, pi
 from sensor_msgs.msg import Imu
 from sensor_msgs.msg import NavSatFix
-#from std_msgs import Float32
+from std_msgs import Float32
 
 # TODO: Sensor readings are Float64, Thruster cmds are Float32. Verify that there are no issues
 class ControllerClass:
