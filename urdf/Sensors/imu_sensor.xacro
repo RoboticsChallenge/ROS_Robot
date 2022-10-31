@@ -56,7 +56,7 @@
 
   <gazebo>
     <plugin filename="libhector_gazebo_ros_magnetic.so" name="magnetometer">
-      <updateRate>20.0</updateRate>
+      <updateRate>100.0</updateRate>
       <bodyname>magnometer_link</bodyname>
       <topicName>sensors/magnometer</topicName>
       <referenceHeading>72.0</referenceHeading>

@@ -37,7 +37,7 @@
 <link name="GPS_link"> </link>
   <gazebo>
     <plugin filename="libhector_gazebo_ros_gps.so" name="gps_plugin_gps">
-      <updateRate>1</updateRate>
+      <updateRate>100</updateRate>
       <alwaysOn>true</alwaysOn>
       <bodyName>GPS_1</bodyName>
       <!-- Manually prepend namespace to tf frame. -->
