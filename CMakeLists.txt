@@ -229,6 +229,7 @@ catkin_install_python(PROGRAMS
     nodes/twist2thrust.py
     nodes/key2thrust_angle.py
     scripts/object_tracker.py
+    nodes/controller.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 #############
