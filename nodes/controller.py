@@ -2,12 +2,22 @@
 
 import rospy
 import math
-from math import sin, asin, cos, acos, tan, atan, atan2, exp, sqrt, pi
+from math import sin, asin, cos, acos, tan, atan, atan2, exp, sqrt, radians, pi
 from sensor_msgs.msg import Imu
 from sensor_msgs.msg import NavSatFix
 from std_msgs.msg import Float32
 from std_msgs.msg import Bool
 from geometry_msgs.msg import Point
+
+# 4. order approximation formula for converting lat deg to meters
+def MetersPerLat(latitude):
+    lat = radians(latitude)
+    return 111132.92 - 559.82*cos(2*lat) + 1.175*cos(4*lat) - 0.0023*cos(6*lat)
+
+# 4. order approximation formula for converting long deg to meters
+def MetersPerLong(longitude):
+    long = radians(longitude)
+    return 111412.84*cos(long) - 93.5*cos(3*long) + 0.118*cos(5*long)
 
 # TODO: Sensor readings are Float64, Thruster cmds are Float32. Verify that there are no issues
 class ControllerClass:
@@ -60,15 +70,16 @@ class ControllerClass:
         self.imu_az = msg.linear_acceleration.z
         
     def clbk_gps(self, msg):
-        self.gps_lat = msg.latitude
-        self.gps_long = msg.longitude
+        self.gps_lat = msg.latitude * MetersPerLat(msg.x)
+        self.gps_long = msg.longitude * MetersPerLong(msg.y)
     
     def clbk_auto(self, msg):
         self.auto = msg.data
             
     def clbk_sp(self, msg):
-        self.sp_lat = msg.x
-        self.sp_long = msg.y
+        self.sp_lat = msg.x * MetersPerLat(msg.x)
+        self.sp_long = msg.y * MetersPerLong(msg.y)
+               
 
     def FilterGPS(self, lat_prev, long_prev): # exponential filter
         tau = 0.1                                                   # TODO: move to global variable
