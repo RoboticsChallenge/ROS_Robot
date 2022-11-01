@@ -21,7 +21,7 @@ def MetersPerLat(latitude):
 def MetersPerLong(latitude):
     #lat = radians(latitude)
     #return 111412.84*cos(lat) - 93.5*cos(3*lat) + 0.118*cos(5*lat)
-    return 40075 * cos(radians(-33.72))/360 # approx value for specific lat deg
+    return 40075000 * cos(radians(-33.72))/360 # approx value for specific lat deg
 
 class ControllerClass:
     def __init__(self):
@@ -41,6 +41,7 @@ class ControllerClass:
         self.pub_wt = rospy.Publisher('/ros_robot/thrusters/Center_thrust_cmd', Float32, queue_size=1)
         self.pub_wt_angle = rospy.Publisher('/ros_robot/thrusters/Center_thrust_angle', Float32, queue_size=1)
         self.pub_error = rospy.Publisher('/controller/error', Float32, queue_size=1)
+        self.pub_error2 = rospy.Publisher('/controller/error2', Float32, queue_size=1)
 
         #default values for the variables as a placeholder until the actual sensor values are recieved through from the ros topic
         self.imu_bx = 0
@@ -77,6 +78,7 @@ class ControllerClass:
     def clbk_gps(self, msg): # position from gps is lat/long. Scaled to meter for internal use inside controller
         self.gps_lat = msg.latitude * MetersPerLat(msg.latitude)
         self.gps_long = msg.longitude * MetersPerLong(msg.latitude)
+
     
     def clbk_auto(self, msg): # bit recived from topic used to set controller in auto / manual mode
         self.auto = msg.data
@@ -84,6 +86,7 @@ class ControllerClass:
     def clbk_sp(self, msg): # sp is provided in same format (lat/long) as gps. Scaled to meter for internal use inside controller
         self.sp_lat = msg.y * MetersPerLat(msg.y)
         self.sp_long = msg.x * MetersPerLong(msg.y)
+
                
 
     def FilterGPS(self, lat_prev, long_prev):   # exponential filter
@@ -152,7 +155,8 @@ class ControllerClass:
             theta = self.ProcessIMU(bx, by, bz, bw, ax, ay, az)
             
             # calculate errors
-            d = max(sqrt((self.sp_lat-lat)**2+(self.sp_long-long)**2) - offset,0);      # dist is positive
+            #d = max(sqrt((self.sp_lat-lat)**2+(self.sp_long-long)**2) - offset,0)      # dist is positive
+            d = sqrt((self.sp_lat-lat)**2+(self.sp_long-long)**2)      # dist is positive
             angle = atan2((self.sp_lat-lat),(self.sp_long-long))                        # angle in [-pi,pi]
             e = (angle-theta) % (2*pi)
             if e > pi:                                                                  # error in [-pi,pi]
@@ -171,6 +175,7 @@ class ControllerClass:
                 sign = 1
                 
             self.pub_error.publish(e)
+
 
             # low pass filter derivative for PD controller
             ef = ef_prev + (e-ef_prev)*k        # filter limits rate of change
