@@ -13,15 +13,15 @@ from tf.transformations import euler_from_quaternion
 
 # 4. order approximation formula for converting lat deg to meters
 def MetersPerLat(latitude):
-    #lat = radians(latitude)
-    #return 111132.92 - 559.82*cos(2*lat) + 1.175*cos(4*lat) - 0.0023*cos(6*lat)
-    return 111320 # approx value for all deg
+    lat = radians(latitude)
+    return 111132.92 - 559.82*cos(2*lat) + 1.175*cos(4*lat) - 0.0023*cos(6*lat)
+    #return 111320 # approx value for all lat deg
 
 # 4. order approximation formula for converting long deg to meters
 def MetersPerLong(latitude):
-    #lat = radians(latitude)
-    #return 111412.84*cos(lat) - 93.5*cos(3*lat) + 0.118*cos(5*lat)
-    return 40075 * cos(radians(-33.72))/360 # approx value for lat deg
+    lat = radians(latitude)
+    return 111412.84*cos(lat) - 93.5*cos(3*lat) + 0.118*cos(5*lat)
+    #return 40075 * cos(radians(-33.72))/360 # approx value for specific lat deg
 
 class ControllerClass:
     def __init__(self):
@@ -59,7 +59,7 @@ class ControllerClass:
         # setup global variables
         self.dt = 0.01          # sampling time
         self.I = 64.2           # angle between horizontal plane and magnetic vector
-        self.D = 0             # deviation between magnetic and geographic north
+        self.D = 0              # deviation between magnetic and geographic north
         self.B = 5.7065e-5      # magnetic field strength
         self.g = 9.81           # acceleration due to gravity
 
@@ -74,32 +74,32 @@ class ControllerClass:
         self.imu_ay = msg.linear_acceleration.y
         self.imu_az = msg.linear_acceleration.z
         
-    def clbk_gps(self, msg):
+    def clbk_gps(self, msg): # position from gps is lat/long. Scaled to meter for internal use inside controller
         self.gps_lat = msg.latitude * MetersPerLat(msg.latitude)
         self.gps_long = msg.longitude * MetersPerLong(msg.latitude)
     
-    def clbk_auto(self, msg):
+    def clbk_auto(self, msg): # bit recived from topic used to set controller in auto / manual mode
         self.auto = msg.data
             
-    def clbk_sp(self, msg):
+    def clbk_sp(self, msg): # sp is provided in same format (lat/long) as gps. Scaled to meter for internal use inside controller
         self.sp_lat = msg.y * MetersPerLat(msg.y)
         self.sp_long = msg.x * MetersPerLong(msg.y)
                
 
-    def FilterGPS(self, lat_prev, long_prev): # exponential filter
-        tau = 0.1                                                   # TODO: move to global variable
-        k = 1 - exp(-self.dt/tau)
+    def FilterGPS(self, lat_prev, long_prev):   # exponential filter
+        tau = 0.1                               # filter time constant
+        k = 1 - exp(-self.dt/tau)               
         
-        lat = lat_prev + (self.gps_lat - lat_prev)*k
+        lat = lat_prev + (self.gps_lat - lat_prev)*k        # sensor values are rate limited
         long = long_prev + (self.gps_long - long_prev)*k
         
-        return lat, long
+        return lat, long                                    # output filtered values
     
     def FilterIMU(self, bx_prev, by_prev, bz_prev, bw_prev, ax_prev, ay_prev, az_prev): # exponential filter
-        tau = 0.1                                                   # TODO: move to global variable
+        tau = 0.1                                   # filter time constant
         k = 1 - exp(-self.dt/tau)
         
-        bx = bx_prev + (self.imu_bx - bx_prev)*k
+        bx = bx_prev + (self.imu_bx - bx_prev)*k    # sensor values are rate limited
         by = by_prev + (self.imu_by - by_prev)*k
         bz = bz_prev + (self.imu_bz - bz_prev)*k
         bw = bw_prev + (self.imu_bw - bw_prev)*k
@@ -107,17 +107,16 @@ class ControllerClass:
         ay = ay_prev + (self.imu_ay - ay_prev)*k
         az = az_prev + (self.imu_az - az_prev)*k
 
-        return bx, by, bz, bw, ax, ay, az
+        return bx, by, bz, bw, ax, ay, az           # output filtered values
     
     
     def ProcessIMU(self,bx, by, bz, bw, ax, ay, az):
-        roll, pitch, yaw = euler_from_quaternion([bx, by, bz, bw])
-        return yaw + self.D*pi/180
+        roll, pitch, yaw = euler_from_quaternion([bx, by, bz, bw])  # extract orientation from quarternion
+        return yaw + self.D*pi/180                                  # add megnetic deviation before output
         
     #main loop running the control logic
     def runController(self):
-        #Defines the frequency in Hz in which the following loop will run
-        r = rospy.Rate(100)
+        r = rospy.Rate(100)                                         #Defines the frequency in Hz in which the following loop will run
         finished = False
         
         # setup
@@ -138,9 +137,9 @@ class ControllerClass:
         while not finished: # TODO: add automatic mode from topic
             # get new filtered inputs
             lat, long = self.FilterGPS(lat_prev, long_prev)
-            lat_prev, long_prev = lat, long                                                                     # store previous values
+            lat_prev, long_prev = lat, long                                                                         # store previous values
             bx,by,bz,bw,ax,ay,az = self.FilterIMU(bx_prev, by_prev, bz_prev, bw_prev, ax_prev, ay_prev, az_prev)
-            bx_prev, by_prev, bz_prev, bw_prev, ax_prev, ay_prev, az_prev = bx,by,bz,bw,ax,ay,az                            # store previous values
+            bx_prev, by_prev, bz_prev, bw_prev, ax_prev, ay_prev, az_prev = bx,by,bz,bw,ax,ay,az                    # store previous values
             
             # process IMU values
             theta = self.ProcessIMU(bx, by, bz, bw, ax, ay, az)
