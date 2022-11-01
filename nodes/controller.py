@@ -59,7 +59,7 @@ class ControllerClass:
         # setup global variables
         self.dt = 0.01          # sampling time
         self.I = 64.2           # angle between horizontal plane and magnetic vector
-        self.D = 0              # deviation between magnetic and geographic north
+        self.D = 90              # deviation between magnetic and geographic north
         self.B = 5.7065e-5      # magnetic field strength
         self.g = 9.81           # acceleration due to gravity
 
@@ -123,7 +123,7 @@ class ControllerClass:
         Kv = 800;       # Gain Kp distance controller
         Dv = 100;        # Gain Kd distance controller
         Iv = 0;         # Gain Ki distance controller
-        Ka = 1800;      # Gain Kp angle controller
+        Ka = 3000;      # Gain Kp angle controller
         Da = 200;       # Gain Kd angle controller
         ptc = 0.1;      # filter time constant
         offset = 0;     # offset set when point tracking
