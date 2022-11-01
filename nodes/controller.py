@@ -40,7 +40,7 @@ class ControllerClass:
         self.pub_wr = rospy.Publisher('/ros_robot/thrusters/right_thrust_cmd', Float32, queue_size=1)
         self.pub_wt = rospy.Publisher('/ros_robot/thrusters/Center_thrust_cmd', Float32, queue_size=1)
         self.pub_wt_angle = rospy.Publisher('/ros_robot/thrusters/Center_thrust_angle', Float32, queue_size=1)
-
+        self.pub_error = rospy.Publisher('/controller/error', Float32, queue_size=1)
 
         #default values for the variables as a placeholder until the actual sensor values are recieved through from the ros topic
         self.imu_bx = 0
@@ -112,7 +112,14 @@ class ControllerClass:
     
     def ProcessIMU(self,bx, by, bz, bw, ax, ay, az):
         roll, pitch, yaw = euler_from_quaternion([bx, by, bz, bw])  # extract orientation from quarternion
-        return yaw + self.D*pi/180                                  # add megnetic deviation before output
+        yaw + self.D*pi/180                                         # add magnetic deviation before output
+        
+        if yaw > pi:
+            yaw = yaw - 2*pi
+        elif yaw < -pi:
+            yaw = yaw + 2*pi
+            
+        return yaw
         
     #main loop running the control logic
     def runController(self):
@@ -120,10 +127,10 @@ class ControllerClass:
         finished = False
         
         # setup
-        Kv = 800;       # Gain Kp distance controller
+        Kv = 500;       # Gain Kp distance controller
         Dv = 100;        # Gain Kd distance controller
         Iv = 0;         # Gain Ki distance controller
-        Ka = 3000;      # Gain Kp angle controller
+        Ka = 2500;      # Gain Kp angle controller
         Da = 200;       # Gain Kd angle controller
         ptc = 0.1;      # filter time constant
         offset = 0;     # offset set when point tracking
@@ -150,6 +157,8 @@ class ControllerClass:
             e = (angle-theta) % (2*pi)
             if e > pi:                                                                  # error in [-pi,pi]
                 e = e - 2*pi
+            elif e < -pi:
+                e = e + 2*pi
             
             # determine if vessel shall move forward or reverse
             if d<10 and e>pi/2:
@@ -160,12 +169,14 @@ class ControllerClass:
                 e = e+pi
             else:
                 sign = 1
+                
+            self.pub_error.publish(e)
 
             # low pass filter derivative for PD controller
             ef = ef_prev + (e-ef_prev)*k        # filter limits rate of change
             de = (ef - ef_prev) / self.dt       # calc derivative
             ef_prev = ef
-            
+                        
             df = df_prev + (d-df_prev)*k        # filter limits rate of change
             dd = (df - df_prev) / self.dt       # calc derivative
             df_prev = df
