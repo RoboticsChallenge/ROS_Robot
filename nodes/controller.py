@@ -8,18 +8,21 @@ from sensor_msgs.msg import NavSatFix
 from std_msgs.msg import Float32
 from std_msgs.msg import Bool
 from geometry_msgs.msg import Point
+from tf.transformations import euler_from_quaternion
+
 
 # 4. order approximation formula for converting lat deg to meters
 def MetersPerLat(latitude):
-    lat = radians(latitude)
-    return 111132.92 - 559.82*cos(2*lat) + 1.175*cos(4*lat) - 0.0023*cos(6*lat)
+    #lat = radians(latitude)
+    #return 111132.92 - 559.82*cos(2*lat) + 1.175*cos(4*lat) - 0.0023*cos(6*lat)
+    return 111320 # approx value for all deg
 
 # 4. order approximation formula for converting long deg to meters
-def MetersPerLong(longitude):
-    long = radians(longitude)
-    return 111412.84*cos(long) - 93.5*cos(3*long) + 0.118*cos(5*long)
+def MetersPerLong(latitude):
+    #lat = radians(latitude)
+    #return 111412.84*cos(lat) - 93.5*cos(3*lat) + 0.118*cos(5*lat)
+    return 40075 * cos(radians(-33.72))/360 # approx value for lat deg
 
-# TODO: Sensor readings are Float64, Thruster cmds are Float32. Verify that there are no issues
 class ControllerClass:
     def __init__(self):
         # Initialze a ros node
@@ -43,6 +46,7 @@ class ControllerClass:
         self.imu_bx = 0
         self.imu_by = 0
         self.imu_bz = 0
+        self.imu_bw = 0
         self.imu_ax = 0
         self.imu_ay = 0
         self.imu_az = 0
@@ -65,20 +69,21 @@ class ControllerClass:
         self.imu_bx = msg.orientation.x
         self.imu_by = msg.orientation.y
         self.imu_bz = msg.orientation.z
+        self.imu_bw = msg.orientation.w
         self.imu_ax = msg.linear_acceleration.x
         self.imu_ay = msg.linear_acceleration.y
         self.imu_az = msg.linear_acceleration.z
         
     def clbk_gps(self, msg):
-        self.gps_lat = msg.latitude * MetersPerLat(msg.x)
-        self.gps_long = msg.longitude * MetersPerLong(msg.y)
+        self.gps_lat = msg.latitude * MetersPerLat(msg.latitude)
+        self.gps_long = msg.longitude * MetersPerLong(msg.latitude)
     
     def clbk_auto(self, msg):
         self.auto = msg.data
             
     def clbk_sp(self, msg):
-        self.sp_lat = msg.x * MetersPerLat(msg.x)
-        self.sp_long = msg.y * MetersPerLong(msg.y)
+        self.sp_lat = msg.y * MetersPerLat(msg.y)
+        self.sp_long = msg.x * MetersPerLong(msg.y)
                
 
     def FilterGPS(self, lat_prev, long_prev): # exponential filter
@@ -90,34 +95,24 @@ class ControllerClass:
         
         return lat, long
     
-    def FilterIMU(self, bx_prev, by_prev, bz_prev, ax_prev, ay_prev, az_prev): # exponential filter
+    def FilterIMU(self, bx_prev, by_prev, bz_prev, bw_prev, ax_prev, ay_prev, az_prev): # exponential filter
         tau = 0.1                                                   # TODO: move to global variable
         k = 1 - exp(-self.dt/tau)
         
         bx = bx_prev + (self.imu_bx - bx_prev)*k
         by = by_prev + (self.imu_by - by_prev)*k
         bz = bz_prev + (self.imu_bz - bz_prev)*k
+        bw = bw_prev + (self.imu_bw - bw_prev)*k
         ax = ax_prev + (self.imu_ax - ax_prev)*k
         ay = ay_prev + (self.imu_ay - ay_prev)*k
         az = az_prev + (self.imu_az - az_prev)*k
 
-        return bx, by, bz, ax, ay, az
+        return bx, by, bz, bw, ax, ay, az
     
-    def ProcessIMU(self,bx, by, bz, ax, ay, az):
-        # TODO: zero angle need to be towards right. Range not important. can be [-inf,inf]
-        pitch = asin(-ax/self.g)
-        if az != 0:
-            roll = atan(ay/az)
-        else:
-            roll = pi
-        
-        if bx != 0:
-            #yaw = atan2((cos(pitch)*(bz*sin(roll) - by*cos(roll))), (bx + self.B*sin(self.I)*sin(pitch))) + self.D
-            yaw = atan2(-by, bx) + self.D*pi/180 # simplified yaw calculations. Must disable roll and pitch in gazebo
-        else:
-            yaw = pi
-        
-        return yaw
+    
+    def ProcessIMU(self,bx, by, bz, bw, ax, ay, az):
+        roll, pitch, yaw = euler_from_quaternion([bx, by, bz, bw])
+        return yaw + self.D*pi/180
         
     #main loop running the control logic
     def runController(self):
@@ -126,7 +121,7 @@ class ControllerClass:
         finished = False
         
         # setup
-        Kv = 350;       # Gain Kp distance controller
+        Kv = 500;       # Gain Kp distance controller
         Dv = 30;        # Gain Kd distance controller
         Iv = 0;         # Gain Ki distance controller
         Ka = 1800;      # Gain Kp angle controller
@@ -137,20 +132,18 @@ class ControllerClass:
         
         # setup controller memory variables
         lat_prev, long_prev = 0, 0
-        bx_prev, by_prev, bz_prev, ax_prev, ay_prev,az_prev = 0, 0, 0, 0, 0, 0
+        bx_prev, by_prev, bz_prev, bw_prev, ax_prev, ay_prev,az_prev = 0, 0, 0, 0, 0, 0, 0
         ef_prev, df_prev = 0, 0
         
-        
-        n = 0
         while not finished: # TODO: add automatic mode from topic
             # get new filtered inputs
             lat, long = self.FilterGPS(lat_prev, long_prev)
             lat_prev, long_prev = lat, long                                                                     # store previous values
-            bx,by,bz,ax,ay,az = self.FilterIMU(bx_prev, by_prev, bz_prev, ax_prev, ay_prev, az_prev)
-            bx_prev, by_prev, bz_prev, ax_prev, ay_prev, az_prev = bx,by,bz,ax,ay,az                            # store previous values
+            bx,by,bz,bw,ax,ay,az = self.FilterIMU(bx_prev, by_prev, bz_prev, bw_prev, ax_prev, ay_prev, az_prev)
+            bx_prev, by_prev, bz_prev, bw_prev, ax_prev, ay_prev, az_prev = bx,by,bz,bw,ax,ay,az                            # store previous values
             
             # process IMU values
-            theta = self.ProcessIMU(bx, by, bz, ax, ay, az)
+            theta = self.ProcessIMU(bx, by, bz, bw, ax, ay, az)
             
             # calculate errors
             d = max(sqrt((self.sp_lat-lat)**2+(self.sp_long-long)**2) - offset,0);      # dist is positive
@@ -183,23 +176,23 @@ class ControllerClass:
             uv = max(min((Kv*df + Dv*dd)*sign,5000),-5000)
             
             # change control outputs based of distance to target
-            if d > 0.1:
+            if d > 0.5:
                 wl = uv * (1 - sign*ua/8000)
                 wr = uv * (1 + sign*ua/8000)
                 wt = ua
             else:
-                wl = uv * (1 - sign*ua/2000)    # TODO: Add bias or increased gain???
-                wr = uv * (1 + sign*ua/2000)    # TODO: Add bias or increased gain???
+                wl = uv * (1 - sign*ua/2000) + 500    # TODO: Add bias or increased gain???
+                wr = uv * (1 + sign*ua/2000) + 500    # TODO: Add bias or increased gain???
                 wt = 0
 
             # Publish msg (scaled and inverted to [-1,1])
-            #self.pub_wl.publish(max(min(wl/-5000,1),-1))
-            #self.pub_wr.publish(max(min(wr/-5000,1),-1))
-            #self.pub_wt.publish(max(min(wt/-6000,1),-1))
-            self.pub_wl.publish(sin(pi/4))
-            self.pub_wr.publish(theta*180/pi)
-            self.pub_wt.publish(e)
-
+            self.pub_wl.publish(max(min(wl/5000,1),-1))
+            self.pub_wr.publish(max(min(wr/5000,1),-1))
+            #self.pub_wt.publish(max(min(wt/6000,1),-1))
+            #self.pub_wl.publish(self.sp_lat)
+            #self.pub_wr.publish(lat)
+            self.pub_wt.publish(0)
+            
             # sleeps for the time needed to ensure that the loop will be executed with the previously defined frequency
             r.sleep()
 
