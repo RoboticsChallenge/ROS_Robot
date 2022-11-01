@@ -45,6 +45,8 @@
       <pose>10 0 0 0 0 0</pose>
       <uri>model://platypus_buoy</uri>
     </include>
+    <!--latitude: -33.72421907400194
+        long: 150.67973619974367 (x value)-->
 
     <include>
       <name>turtle_buoy</name>
