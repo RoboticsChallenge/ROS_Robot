@@ -133,7 +133,7 @@ class ControllerClass:
         Kv = 500;       # Gain Kp distance controller
         Dv = 100;        # Gain Kd distance controller
         Iv = 0;         # Gain Ki distance controller
-        Ka = 2500;      # Gain Kp angle controller
+        Ka = 8000;      # Gain Kp angle controller
         Da = 200;       # Gain Kd angle controller
         ptc = 0.1;      # filter time constant
         offset = 0;     # offset set when point tracking
