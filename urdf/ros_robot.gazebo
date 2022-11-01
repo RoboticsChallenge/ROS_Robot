@@ -31,7 +31,7 @@
     <xUU>72.4</xUU> <!--Quadratic drag in the surge(forward)  direction [N/(m/s)^2]-->
     <yV>200.0</yV> <!--20 Linear drag in the sway(sideways) direction [N/(m/s)]-->
     <yVV>0.0</yVV>
-    <zW>20.0</zW> <!--20 Linear drag in the heave(up-down) direction [N/(m/s)]-->
+    <zW>400.0</zW> <!--20 Linear drag in the heave(up-down) direction [N/(m/s)]-->
     <kP>20.0</kP> <!--20 -->
     <mQ>20.0</mQ> <!--20 -->
     <nR>180.0</nR> <!--400.0 Linear drag in the yaw direction [Nm/(rad/s)]-->
