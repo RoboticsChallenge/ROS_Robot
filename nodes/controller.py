@@ -120,8 +120,8 @@ class ControllerClass:
         finished = False
         
         # setup
-        Kv = 500;       # Gain Kp distance controller
-        Dv = 30;        # Gain Kd distance controller
+        Kv = 800;       # Gain Kp distance controller
+        Dv = 100;        # Gain Kd distance controller
         Iv = 0;         # Gain Ki distance controller
         Ka = 1800;      # Gain Kp angle controller
         Da = 200;       # Gain Kd angle controller
@@ -180,8 +180,8 @@ class ControllerClass:
                 wr = uv * (1 + sign*ua/8000)
                 wt = ua
             else:
-                wl = uv * (1 - sign*ua/2000) + 500    # TODO: Add bias or increased gain???
-                wr = uv * (1 + sign*ua/2000) + 500    # TODO: Add bias or increased gain???
+                wl = uv * (1 - sign*ua/2000)*10    # TODO: Add bias or increased gain???
+                wr = uv * (1 + sign*ua/2000)*10    # TODO: Add bias or increased gain???
                 wt = 0
 
             # Publish msg (scaled and inverted to [-1,1])
