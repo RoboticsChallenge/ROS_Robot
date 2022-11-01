@@ -13,15 +13,15 @@ from tf.transformations import euler_from_quaternion
 
 # 4. order approximation formula for converting lat deg to meters
 def MetersPerLat(latitude):
-    lat = radians(latitude)
-    return 111132.92 - 559.82*cos(2*lat) + 1.175*cos(4*lat) - 0.0023*cos(6*lat)
-    #return 111320 # approx value for all lat deg
+    #lat = radians(latitude)
+    #return 111132.92 - 559.82*cos(2*lat) + 1.175*cos(4*lat) - 0.0023*cos(6*lat)
+    return 111320 # approx value for all lat deg
 
 # 4. order approximation formula for converting long deg to meters
 def MetersPerLong(latitude):
-    lat = radians(latitude)
-    return 111412.84*cos(lat) - 93.5*cos(3*lat) + 0.118*cos(5*lat)
-    #return 40075 * cos(radians(-33.72))/360 # approx value for specific lat deg
+    #lat = radians(latitude)
+    #return 111412.84*cos(lat) - 93.5*cos(3*lat) + 0.118*cos(5*lat)
+    return 40075 * cos(radians(-33.72))/360 # approx value for specific lat deg
 
 class ControllerClass:
     def __init__(self):
@@ -146,9 +146,9 @@ class ControllerClass:
             
             # calculate errors
             d = max(sqrt((self.sp_lat-lat)**2+(self.sp_long-long)**2) - offset,0);      # dist is positive
-            angle = atan2((self.sp_lat-lat),(self.sp_long-long))                      # angle in [-pi,pi]
+            angle = atan2((self.sp_lat-lat),(self.sp_long-long))                        # angle in [-pi,pi]
             e = (angle-theta) % (2*pi)
-            if e > pi:                                                      # error in [-pi,pi]
+            if e > pi:                                                                  # error in [-pi,pi]
                 e = e - 2*pi
             
             # determine if vessel shall move forward or reverse
