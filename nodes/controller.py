@@ -12,16 +12,16 @@ from tf.transformations import euler_from_quaternion
 
 
 # 4. order approximation formula for converting lat deg to meters
-def MetersPerLat(latitude):
+def MetersPerLat(latitude): # function of latitude
     #lat = radians(latitude)
     #return 111132.92 - 559.82*cos(2*lat) + 1.175*cos(4*lat) - 0.0023*cos(6*lat)
-    return 111320 # approx value for all lat deg
+    return 111320 # approx value for all lat degrees
 
 # 4. order approximation formula for converting long deg to meters
-def MetersPerLong(latitude):
+def MetersPerLong(latitude): # function of latitude
     #lat = radians(latitude)
     #return 111412.84*cos(lat) - 93.5*cos(3*lat) + 0.118*cos(5*lat)
-    return 40075000 * cos(radians(-33.72))/360 # approx value for specific lat deg
+    return 40075000 * cos(radians(-33.72))/360 # approx value for specific lat degree
 
 class ControllerClass:
     def __init__(self):
@@ -33,7 +33,6 @@ class ControllerClass:
         self.sub_gps = rospy.Subscriber('/sensors/gps/fix', NavSatFix, self.clbk_gps, queue_size=1)
         self.sub_auto = rospy.Subscriber('/controller/auto', Bool, self.clbk_auto, queue_size=1)
         self.sub_sp = rospy.Subscriber('/controller/sp', Point, self.clbk_sp, queue_size=1)
-        # TODO: Create topic for recieving lat/long setpoints
         
         # Create a publisher to the command topics
         self.pub_wl = rospy.Publisher('/ros_robot/thrusters/left_thrust_cmd', Float32, queue_size=1)
@@ -50,7 +49,7 @@ class ControllerClass:
         # setup global variables
         self.dt = 0.01          # sampling time
         self.I = 64.2           # angle between horizontal plane and magnetic vector
-        self.D = 90              # deviation between magnetic and geographic north
+        self.D = 90             # deviation between magnetic and geographic north
         self.B = 5.7065e-5      # magnetic field strength
         self.g = 9.81           # acceleration due to gravity
 
@@ -113,7 +112,7 @@ class ControllerClass:
         
     #main loop running the control logic
     def runController(self):
-        r = rospy.Rate(100)                                         #Defines the frequency in Hz in which the following loop will run
+        r = rospy.Rate(100)     # Defines the frequency in Hz in which the following loop will run
         finished = False
         
         # setup
@@ -124,7 +123,7 @@ class ControllerClass:
         Da = 200;       # Gain Kd angle controller
         ptc = 0.1;      # filter time constant
         offset = 0;     # offset set when point tracking
-        k = 1-exp(-self.dt/ptc)
+        k = 1-exp(-self.dt/ptc) # precomputed exponential filter constant
         
         # setup controller memory variables
         lat_prev, long_prev = 0, 0
@@ -143,7 +142,7 @@ class ControllerClass:
             
             # calculate errors
             #d = max(sqrt((self.sp_lat-lat)**2+(self.sp_long-long)**2) - offset,0)      # dist is positive
-            d = sqrt((self.sp_lat-lat)**2+(self.sp_long-long)**2)      # dist is positive
+            d = max(sqrt((self.sp_lat-lat)**2+(self.sp_long-long)**2) - offset)         # dist is positive
             angle = atan2((self.sp_lat-lat),(self.sp_long-long))                        # angle in [-pi,pi]
             e = (angle-theta) % (2*pi)
             if e > pi:                                                                  # error in [-pi,pi]
@@ -160,9 +159,6 @@ class ControllerClass:
                 e = e+pi
             else:
                 sign = 1
-                
-            self.pub_error.publish(e)
-
 
             # low pass filter derivative for PD controller
             ef = ef_prev + (e-ef_prev)*k        # filter limits rate of change
@@ -183,17 +179,14 @@ class ControllerClass:
                 wr = uv * (1 + sign*ua/8000)
                 wt = ua
             else:
-                wl = uv * (1 - sign*ua/2000)*10    # TODO: Add bias or increased gain???
-                wr = uv * (1 + sign*ua/2000)*10    # TODO: Add bias or increased gain???
+                wl = uv * (1 - sign*ua/2000)*10
+                wr = uv * (1 + sign*ua/2000)*10
                 wt = 0
 
             # Publish msg (scaled and inverted to [-1,1])
             self.pub_wl.publish(max(min(wl/5000,1),-1))
             self.pub_wr.publish(max(min(wr/5000,1),-1))
-            #self.pub_wt.publish(max(min(wt/6000,1),-1))
-            #self.pub_wl.publish(self.sp_lat)
-            #self.pub_wr.publish(lat)
-            self.pub_wt.publish(0)
+            self.pub_wt.publish(max(min(wt/6000,1),-1))
             
             # sleeps for the time needed to ensure that the loop will be executed with the previously defined frequency
             r.sleep()
