@@ -16,18 +16,18 @@
 
    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
     <param name="publish_frequency" type="double" value="100.0" />
-    <param name="tf_prefix" value="mobile_manipulator" />
+    <param name="tf_prefix" value="ros_robot" />
   </node>
 
   <rosparam file="$(find ros_robot_description)/config/controller.yaml" command="load"/>
 
-  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="ros_robot_controller"
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="ros_robot"
      args="joint_state_controller JawL_position_controller JawR_position_controller L6_position_controller L5_position_controller
      L4_position_controller L3_position_controller L2_position_controller L1_position_controller"/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">   
    <!--<arg name="world_name" value="$(find gazebo_tutorials)/worlds/my_world.world"/>-->
-    <arg name="paused" value="true"/>
+    <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
     <arg name="gui" value="true"/>
     <arg name="headless" value="false"/>
