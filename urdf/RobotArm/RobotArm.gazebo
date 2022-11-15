@@ -64,4 +64,13 @@
   <selfCollide>true</selfCollide>
 </gazebo>
 
+<!--Plugin for RobotArm control in gazebo-->
+<gazebo>
+   <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+     <robotNamespace>ros_robot</robotNamespace>
+     <controlPeriod>0.001</controlPeriod>
+     <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+   </plugin>
+ </gazebo>
+
 </robot>
