@@ -7,32 +7,32 @@ ros_robot:
   JawL_position_controller:
     type: effort_controllers/JointPositionController
     joint: JawL
-    pid: {p: 100.0, i: 0.01, d: 10.0}
+    pid: {p: 10.0, i: 10.0, d: 1.0}
   JawR_position_controller:
     type: effort_controllers/JointPositionController
     joint: JawR
-    pid: {p: 100.0, i: 0.01, d: 10.0}
+    pid: {p: 10.0, i: 10.0, d: 1.0}
   L6_position_controller:
     type: effort_controllers/JointPositionController
     joint: L6
-    pid: {p: 100.0, i: 0.01, d: 10.0}
+    pid: {p: 10.0, i: 10.0, d: 1.0}
   L5_position_controller:
     type: effort_controllers/JointPositionController
     joint: L5
-    pid: {p: 100.0, i: 0.01, d: 10.0}
+    pid: {p: 10.0, i: 10.0, d: 1.0}
   L4_position_controller:
     type: effort_controllers/JointPositionController
     joint: L4
-    pid: {p: 100.0, i: 0.01, d: 10.0}
+    pid: {p: 10.0, i: 10.0, d: 1.0}
   L3_position_controller:
     type: effort_controllers/JointPositionController
     joint: L3
-    pid: {p: 100.0, i: 0.01, d: 10.0}
+    pid: {p: 10.0, i: 10.0, d: 1.0}
   L2_position_controller:
     type: effort_controllers/JointPositionController
     joint: L2
-    pid: {p: 100.0, i: 0.01, d: 10.0}
+    pid: {p: 10.0, i: 10.0, d: 1.0}
   L1_position_controller:
     type: effort_controllers/JointPositionController
     joint: L1
-    pid: {p: 100.0, i: 0.01, d: 10.0}
+    pid: {p: 10.0, i: 10.0, d: 1.0}

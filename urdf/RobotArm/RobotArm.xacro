@@ -243,8 +243,6 @@
   <child link="L2_1"/>
   <axis xyz="-0.006953 0.999976 -0.0"/>
   <limit upper="1.134464" lower="-3.490659" effort="100" velocity="100"/>
-
-  <dynamics damping="100.0" friction="100.0"/>  <!--fjern denne, kun for å holde armen i ro når ingen controller -->
 </joint>
 
 <joint name="L1" type="revolute">
