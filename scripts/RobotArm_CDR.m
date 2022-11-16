@@ -48,26 +48,31 @@ rosinit
 % Initialize variables
 q_temp = [0,0,0,0,0,0];
 
-% Publishing rate 10Hz
-rate = robotics.Rate(10);
 
+% Publishing rate 20Hz
+rate = robotics.Rate(20);
 
-for i = 1:length()
-end
+% Forward kinematic to find "Home-Pos" 
+T0 = RobotArm.fkine([0 0 0 0 0 0]);
 
+% Positions given in angles:
+HOME = RobotArm.ikine(T0,'mask',[1 1 1 1 1 1]) % Home pos in angles 
 
+PLASTIC = [deg2rad(90) deg2rad(-137) deg2rad(100) deg2rad(0) deg2rad(2.2) deg2rad(0)] % Pickup pos
+RELEASE = [deg2rad(0) deg2rad(-23.8) deg2rad(191.6) deg2rad(-180) deg2rad(63) deg2rad(0)] % Release plastic pos
 
-% Calculate and publish data
-% Will exit and shutdown ros if we publish Linear.X > 1000
-while rate.TotalElapsedTime < 10 %T.Linear.X < 1000
-      
-   
-        msg_q1.Data = q_temp(1);
-        msg_q2.Data = q_temp(2);
-        msg_q3.Data = q_temp(3);
-        msg_q4.Data = q_temp(4);
-        msg_q5.Data = q_temp(5);
-        msg_q6.Data = q_temp(6);
+% Then I will generate the trajectory, here asking to get 50 interpolated
+% Trajectory from "Home pos" --> "Pickup pos"
+Trajectory1 = jtraj(HOME, PLASTIC , 200) 
+
+for i=1: length(Trajectory1)
+
+        msg_q1.Data = Trajectory1(i,1);
+        msg_q2.Data = Trajectory1(i,2);
+        msg_q3.Data = -Trajectory1(i,3);
+        msg_q4.Data = Trajectory1(i,4);
+        msg_q5.Data = -Trajectory1(i,5);
+        msg_q6.Data = Trajectory1(i,6);
         msg_JawL.Data = 0;
         msg_JawR.Data = 0;
 
@@ -81,33 +86,83 @@ while rate.TotalElapsedTime < 10 %T.Linear.X < 1000
         send(pub_JawL,msg_JawL);
         send(pub_JawR,msg_JawR);
 
-%     if(T ~= Last_T)
-%         % Kode til SexyLars
-% 
-%         Transform = transl(T.Linear.X,T.Linear.Y,T.Linear.Z)*rpy2tr(T.Angular.X,T.Angular.Y,T.Angular.Z,'deg');
-% 
-%         q_temp = RobotArm.ikine(Transform);
-%         msg_q1.Data = q_temp(1);
-%         msg_q2.Data = q_temp(2);
-%         msg_q3.Data = q_temp(3);
-%         msg_q4.Data = q_temp(4);
-%         msg_q5.Data = q_temp(5);
-%         msg_q6.Data = q_temp(6);
-% 
-%         % Publish
-%         send(pub_q1,msg_q1)
-%         send(pub_q2,msg_q2)
-%         send(pub_q3,msg_q3)
-%         send(pub_q4,msg_q4) 
-%         send(pub_q5,msg_q5) 
-%         send(pub_q6,msg_q6) 
-% 
-%     end
-% 
-%     Last_T = T;
-    
-    waitfor(rate);
-end
+        waitfor(rate);
+end 
+
+% Close the gripper
+msg_JawR.Data = -10;
+msg_JawL.Data = 10;
+send(pub_JawL,msg_JawL);
+send(pub_JawR,msg_JawR);
+
+
+pause(2)
+
+% Trajectory from "Pickup pos" --> "Release plastic pos"
+Trajectory2 = jtraj(PLASTIC, RELEASE , 200) 
+
+% Let's now plot the movement:
+for i=1: length(Trajectory2)
+
+        msg_q1.Data = Trajectory2(i,1);
+        msg_q2.Data = Trajectory2(i,2);
+        msg_q3.Data = -Trajectory2(i,3);
+        msg_q4.Data = Trajectory2(i,4);
+        msg_q5.Data = -Trajectory2(i,5);
+        msg_q6.Data = Trajectory2(i,6);
+        msg_JawL.Data = 10;
+        msg_JawR.Data = -10;
+
+        % Publish
+        send(pub_q1,msg_q1);
+        send(pub_q2,msg_q2);
+        send(pub_q3,msg_q3);
+        send(pub_q4,msg_q4); 
+        send(pub_q5,msg_q5); 
+        send(pub_q6,msg_q6); 
+        send(pub_JawL,msg_JawL);
+        send(pub_JawR,msg_JawR);
+
+        waitfor(rate);
+end 
+
+
+% Open the gripper
+msg_JawR.Data = 0.0;
+msg_JawL.Data = 0.0;
+send(pub_JawL,msg_JawL);
+send(pub_JawR,msg_JawR);
+
+pause(2)
+
+% Trajectory from "Release plastic pos" --> "home pos"
+Trajectory3 = jtraj(RELEASE, HOME , 200) 
+
+% Let's now plot the movement:
+for i=1: length(Trajectory3)
+
+        msg_q1.Data = Trajectory3(i,1);
+        msg_q2.Data = Trajectory3(i,2);
+        msg_q3.Data = -Trajectory3(i,3);
+        msg_q4.Data = Trajectory3(i,4);
+        msg_q5.Data = -Trajectory3(i,5);
+        msg_q6.Data = Trajectory3(i,6);
+        msg_JawL.Data = 0.0;
+        msg_JawR.Data = 0.0;
+
+        % Publish
+        send(pub_q1,msg_q1);
+        send(pub_q2,msg_q2);
+        send(pub_q3,msg_q3);
+        send(pub_q4,msg_q4); 
+        send(pub_q5,msg_q5); 
+        send(pub_q6,msg_q6); 
+        send(pub_JawL,msg_JawL);
+        send(pub_JawR,msg_JawR);
+
+        waitfor(rate);
+end 
 
 % Shutdown ROS
 rosshutdown
+
