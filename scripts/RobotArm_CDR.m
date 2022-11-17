@@ -59,11 +59,18 @@ T0 = RobotArm.fkine([0 0 0 0 0 0]);
 HOME = RobotArm.ikine(T0,'mask',[1 1 1 1 1 1]) % Home pos in angles 
 
 PLASTIC = [deg2rad(90) deg2rad(-137) deg2rad(100) deg2rad(0) deg2rad(2.2) deg2rad(0)] % Pickup pos
-RELEASE = [deg2rad(0) deg2rad(-23.8) deg2rad(191.6) deg2rad(-180) deg2rad(63) deg2rad(0)] % Release plastic pos
+RELEASE = [deg2rad(0) deg2rad(-23.8) deg2rad(191.6) deg2rad(-180) deg2rad(60) deg2rad(0)] % Release plastic pos
 
 % Then I will generate the trajectory, here asking to get 50 interpolated
 % Trajectory from "Home pos" --> "Pickup pos"
 Trajectory1 = jtraj(HOME, PLASTIC , 200) 
+
+% Open the gripper to max open pos
+msg_JawR.Data = 100;
+msg_JawL.Data = -100;
+send(pub_JawL,msg_JawL);
+send(pub_JawR,msg_JawR);
+
 
 for i=1: length(Trajectory1)
 
@@ -73,8 +80,8 @@ for i=1: length(Trajectory1)
         msg_q4.Data = Trajectory1(i,4);
         msg_q5.Data = -Trajectory1(i,5);
         msg_q6.Data = Trajectory1(i,6);
-        msg_JawL.Data = 0;
-        msg_JawR.Data = 0;
+        msg_JawL.Data = -100;
+        msg_JawR.Data = 100;
 
         % Publish
         send(pub_q1,msg_q1);
@@ -89,12 +96,12 @@ for i=1: length(Trajectory1)
         waitfor(rate);
 end 
 
+
 % Close the gripper
-msg_JawR.Data = -10;
-msg_JawL.Data = 10;
+msg_JawR.Data = -5;
+msg_JawL.Data = 5;
 send(pub_JawL,msg_JawL);
 send(pub_JawR,msg_JawR);
-
 
 pause(2)
 
@@ -110,8 +117,8 @@ for i=1: length(Trajectory2)
         msg_q4.Data = Trajectory2(i,4);
         msg_q5.Data = -Trajectory2(i,5);
         msg_q6.Data = Trajectory2(i,6);
-        msg_JawL.Data = 10;
-        msg_JawR.Data = -10;
+        msg_JawL.Data = 5;
+        msg_JawR.Data = -5;
 
         % Publish
         send(pub_q1,msg_q1);
@@ -128,8 +135,8 @@ end
 
 
 % Open the gripper
-msg_JawR.Data = 0.0;
-msg_JawL.Data = 0.0;
+msg_JawR.Data = -2;
+msg_JawL.Data = 3;
 send(pub_JawL,msg_JawL);
 send(pub_JawR,msg_JawR);
 
@@ -147,8 +154,8 @@ for i=1: length(Trajectory3)
         msg_q4.Data = Trajectory3(i,4);
         msg_q5.Data = -Trajectory3(i,5);
         msg_q6.Data = Trajectory3(i,6);
-        msg_JawL.Data = 0.0;
-        msg_JawR.Data = 0.0;
+        msg_JawL.Data = -2;
+        msg_JawR.Data = 3;
 
         % Publish
         send(pub_q1,msg_q1);

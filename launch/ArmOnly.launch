@@ -27,6 +27,7 @@
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">   
    <!--<arg name="world_name" value="$(find gazebo_tutorials)/worlds/my_world.world"/>-->
+   <!--<arg name="world_name" value="$(find ros_robot_description)/worlds/RobotArm.world"/>-->
     <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
     <arg name="gui" value="true"/>
