@@ -39,6 +39,5 @@
   <child link="base_link"/>
 </joint>
 
-
 </robot>
 
