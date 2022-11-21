@@ -25,17 +25,11 @@ L(4) = Link('d',L3+L4,'a',0,'alpha',pi/2,'offset',0);
 L(5) = Link('d',0,'a',0,'alpha',pi/2,'offset',L5_offset);
 L(6) = Link('d',-(L5+L6),'a',0,'alpha',0,'offset',0);
 
+% Creating seriallink object
 RobotArm = SerialLink(L,'name', 'RobotArm');
 
 % Need to set the joint limits
 RobotArm.qlim = [[-2.1817 2.1817];[-3.4907 1.1345];[-0.6109 4.1015];[-pi pi];[-1.3090 2.6180];[-pi pi]]; 
-
-
-
-% Lage transformasjonsmatrise fra [x,y,z] rpy
-%T = transl(1 1 1) * rpy2tr(0, 180, 180, 'deg')
-
-
 
 
 % ROS
@@ -45,6 +39,7 @@ rosinit
 
 global T;
 T = rosmessage('geometry_msgs/Twist');
+% Creating subscriber
 sub_Twist = rossubscriber("ros_robot/ManipulatorPose/Command",'geometry_msgs/Twist',@Twist_callback);
 
 % Initializing publishers
@@ -68,8 +63,6 @@ Last_T.Angular.X = 0;
 Last_T.Angular.Y = 0;
 Last_T.Angular.Z = 0;
 
- Transform = transl(0, -0.74, -0.17) * rpy2tr(-90, 0, -23.7, 'deg');
- q_temp = RobotArm.ikine(Transform);
 
 % Publishing rate 20Hz
 rate = robotics.Rate(20);
@@ -77,27 +70,10 @@ rate = robotics.Rate(20);
 % Calculate and publish data
 % Will exit and shutdown ros if we publish Linear.X > 1000
 while T.Linear.X < 1000
-      
-%    
-%         msg_q1.Data = q_temp(1);
-%         msg_q2.Data = q_temp(2);
-%         msg_q3.Data = q_temp(3);
-%         msg_q4.Data = q_temp(4);
-%         msg_q5.Data = q_temp(5);
-%         msg_q6.Data = q_temp(6);
-%         msg_JawL.Data = 0;
-%         msg_JawR.Data = 0;
-% 
-%         % Publish
-%         send(pub_q1,msg_q1);
-%         send(pub_q2,msg_q2);
-%         send(pub_q3,msg_q3);
-%         send(pub_q4,msg_q4); 
-%         send(pub_q5,msg_q5); 
-%         send(pub_q6,msg_q6); 
-%         send(pub_JawL,msg_JawL);
-%         send(pub_JawR,msg_JawR);
 
+    % Checks if new message has been recived with wanted pose for robotarm
+    % if new message has been recived, matlab will send nessecary joint
+    % angles following a trajectory calaulated in matlab
     if(T ~= Last_T)        
         % Create transformation matrix for wanted position and orientation
         Transform = transl(T.Linear.X,T.Linear.Y,T.Linear.Z)*rpy2tr(T.Angular.X,T.Angular.Y,T.Angular.Z,'deg');
@@ -111,48 +87,28 @@ while T.Linear.X < 1000
         Trajectory = jtraj(q_from, q_to, 200); 
 
         % publishing joint angles to arm 
-        for i=1: length(Trajectory1)
+        for i=1: length(Trajectory)
 
-        msg_q1.Data = Trajectory1(i,1);
-        msg_q2.Data = Trajectory1(i,2);
-        msg_q3.Data = -Trajectory1(i,3);
-        msg_q4.Data = Trajectory1(i,4);
-        msg_q5.Data = -Trajectory1(i,5);
-        msg_q6.Data = Trajectory1(i,6);
-        msg_JawL.Data = -100;
-        msg_JawR.Data = 100;
+            msg_q1.Data = Trajectory(i,1);
+            msg_q2.Data = Trajectory(i,2);
+            msg_q3.Data = -Trajectory(i,3);
+            msg_q4.Data = Trajectory(i,4);
+            msg_q5.Data = -Trajectory(i,5);
+            msg_q6.Data = Trajectory(i,6);
 
-        % Publish
-        send(pub_q1,msg_q1);
-        send(pub_q2,msg_q2);
-        send(pub_q3,msg_q3);
-        send(pub_q4,msg_q4); 
-        send(pub_q5,msg_q5); 
-        send(pub_q6,msg_q6); 
-        send(pub_JawL,msg_JawL);
-        send(pub_JawR,msg_JawR);
+            % Publish
+            send(pub_q1,msg_q1);
+            send(pub_q2,msg_q2);
+            send(pub_q3,msg_q3);
+            send(pub_q4,msg_q4); 
+            send(pub_q5,msg_q5); 
+            send(pub_q6,msg_q6); 
 
-        waitfor(rate);
-end 
-
-
-        msg_q1.Data = q_temp(1);
-        msg_q2.Data = q_temp(2);
-        msg_q3.Data = q_temp(3);
-        msg_q4.Data = q_temp(4);
-        msg_q5.Data = q_temp(5);
-        msg_q6.Data = q_temp(6);
-
-        % Publish
-        send(pub_q1,msg_q1)
-        send(pub_q2,msg_q2)
-        send(pub_q3,msg_q3)
-        send(pub_q4,msg_q4) 
-        send(pub_q5,msg_q5) 
-        send(pub_q6,msg_q6) 
-
+            waitfor(rate);
+        end 
     end
-
+    
+    q_from = q_to;
     Last_T = T;
     
     waitfor(rate);
