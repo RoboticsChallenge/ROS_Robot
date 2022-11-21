@@ -43,7 +43,8 @@ RobotArm.qlim = [[-2.1817 2.1817];[-3.4907 1.1345];[-0.6109 4.1015];[-pi pi];[-1
 % Starting ROS
 rosinit
 
-global T
+global T;
+T = rosmessage('geometry_msgs/Twist');
 sub_Twist = rossubscriber("ros_robot/ManipulatorPose/Command",'geometry_msgs/Twist',@Twist_callback);
 
 % Initializing publishers
@@ -57,7 +58,8 @@ sub_Twist = rossubscriber("ros_robot/ManipulatorPose/Command",'geometry_msgs/Twi
 [pub_JawR,msg_JawR] = rospublisher('/ros_robot/JawR_position_controller/command','std_msgs/Float64');
 
 % Initialize variables
-q_temp = [0,0,0,0,0,0];
+q_from = [0,0,0,0,0,0];
+q_to = [0,0,0,0,0,0];
 Last_T = rosmessage('geometry_msgs/Twist');
 Last_T.Linear.X = 0;
 Last_T.Linear.Y = 0;
@@ -74,17 +76,51 @@ rate = robotics.Rate(20);
 
 % Calculate and publish data
 % Will exit and shutdown ros if we publish Linear.X > 1000
-while rate.TotalElapsedTime < 10 %T.Linear.X < 1000
+while T.Linear.X < 1000
       
-   
-        msg_q1.Data = q_temp(1);
-        msg_q2.Data = q_temp(2);
-        msg_q3.Data = q_temp(3);
-        msg_q4.Data = q_temp(4);
-        msg_q5.Data = q_temp(5);
-        msg_q6.Data = q_temp(6);
-        msg_JawL.Data = 0;
-        msg_JawR.Data = 0;
+%    
+%         msg_q1.Data = q_temp(1);
+%         msg_q2.Data = q_temp(2);
+%         msg_q3.Data = q_temp(3);
+%         msg_q4.Data = q_temp(4);
+%         msg_q5.Data = q_temp(5);
+%         msg_q6.Data = q_temp(6);
+%         msg_JawL.Data = 0;
+%         msg_JawR.Data = 0;
+% 
+%         % Publish
+%         send(pub_q1,msg_q1);
+%         send(pub_q2,msg_q2);
+%         send(pub_q3,msg_q3);
+%         send(pub_q4,msg_q4); 
+%         send(pub_q5,msg_q5); 
+%         send(pub_q6,msg_q6); 
+%         send(pub_JawL,msg_JawL);
+%         send(pub_JawR,msg_JawR);
+
+    if(T ~= Last_T)        
+        % Create transformation matrix for wanted position and orientation
+        Transform = transl(T.Linear.X,T.Linear.Y,T.Linear.Z)*rpy2tr(T.Angular.X,T.Angular.Y,T.Angular.Z,'deg');
+        
+        % inverse kinematics to find nessecary joint angles for wanted
+        % pose
+        q_to = RobotArm.ikine(Transform);
+
+        % Making a trajectory to wanted pose
+        % Trajectory from "q_from" --> "q_to" with 200 points
+        Trajectory = jtraj(q_from, q_to, 200); 
+
+        % publishing joint angles to arm 
+        for i=1: length(Trajectory1)
+
+        msg_q1.Data = Trajectory1(i,1);
+        msg_q2.Data = Trajectory1(i,2);
+        msg_q3.Data = -Trajectory1(i,3);
+        msg_q4.Data = Trajectory1(i,4);
+        msg_q5.Data = -Trajectory1(i,5);
+        msg_q6.Data = Trajectory1(i,6);
+        msg_JawL.Data = -100;
+        msg_JawR.Data = 100;
 
         % Publish
         send(pub_q1,msg_q1);
@@ -96,30 +132,28 @@ while rate.TotalElapsedTime < 10 %T.Linear.X < 1000
         send(pub_JawL,msg_JawL);
         send(pub_JawR,msg_JawR);
 
-%     if(T ~= Last_T)
-%         % Kode til SexyLars
-% 
-%         Transform = transl(T.Linear.X,T.Linear.Y,T.Linear.Z)*rpy2tr(T.Angular.X,T.Angular.Y,T.Angular.Z,'deg');
-% 
-%         q_temp = RobotArm.ikine(Transform);
-%         msg_q1.Data = q_temp(1);
-%         msg_q2.Data = q_temp(2);
-%         msg_q3.Data = q_temp(3);
-%         msg_q4.Data = q_temp(4);
-%         msg_q5.Data = q_temp(5);
-%         msg_q6.Data = q_temp(6);
-% 
-%         % Publish
-%         send(pub_q1,msg_q1)
-%         send(pub_q2,msg_q2)
-%         send(pub_q3,msg_q3)
-%         send(pub_q4,msg_q4) 
-%         send(pub_q5,msg_q5) 
-%         send(pub_q6,msg_q6) 
-% 
-%     end
-% 
-%     Last_T = T;
+        waitfor(rate);
+end 
+
+
+        msg_q1.Data = q_temp(1);
+        msg_q2.Data = q_temp(2);
+        msg_q3.Data = q_temp(3);
+        msg_q4.Data = q_temp(4);
+        msg_q5.Data = q_temp(5);
+        msg_q6.Data = q_temp(6);
+
+        % Publish
+        send(pub_q1,msg_q1)
+        send(pub_q2,msg_q2)
+        send(pub_q3,msg_q3)
+        send(pub_q4,msg_q4) 
+        send(pub_q5,msg_q5) 
+        send(pub_q6,msg_q6) 
+
+    end
+
+    Last_T = T;
     
     waitfor(rate);
 end
