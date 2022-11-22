@@ -40,7 +40,7 @@ rosinit
 global T;
 T = rosmessage('geometry_msgs/Twist');
 % Creating subscriber
-sub_Twist = rossubscriber("ros_robot/ManipulatorPose/Command",'geometry_msgs/Twist',@Twist_callback);
+sub_Twist = rossubscriber("/ros_robot/ManipulatorPose/Command",'geometry_msgs/Twist',@Twist_callback);
 
 % Initializing publishers
 [pub_q1,msg_q1] = rospublisher('/ros_robot/L1_position_controller/command','std_msgs/Float64');
