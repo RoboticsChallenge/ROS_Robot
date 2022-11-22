@@ -37,10 +37,15 @@ RobotArm.qlim = [[-2.1817 2.1817];[-3.4907 1.1345];[-0.6109 4.1015];[-pi pi];[-1
 % Starting ROS
 rosinit
 
+% Initializing global variables
+global G;
 global T;
 T = rosmessage('geometry_msgs/Twist');
-% Creating subscriber
-sub_Twist = rossubscriber("/ros_robot/ManipulatorPose/Command",'geometry_msgs/Twist',@Twist_callback);
+G(1) = 0;
+G(2) = 0;
+% Creating subscribers
+sub_Pose = rossubscriber("/ros_robot/ManipulatorPose/Command",'geometry_msgs/Twist',@Twist_callback);
+sub_gripper = rossubscriber("/ros_robot/Gripper/Command",'std_msgs/Float64',@Gripper_callback);
 
 % Initializing publishers
 [pub_q1,msg_q1] = rospublisher('/ros_robot/L1_position_controller/command','std_msgs/Float64');
@@ -96,7 +101,7 @@ while T.Linear.X < 1000
             msg_q5.Data = -Trajectory(i,5);
             msg_q6.Data = Trajectory(i,6);
 
-            % Publish
+            % Publish joint angles
             send(pub_q1,msg_q1);
             send(pub_q2,msg_q2);
             send(pub_q3,msg_q3);
@@ -110,6 +115,13 @@ while T.Linear.X < 1000
     
     q_from = q_to;
     Last_T = T;
+
+    msg_JawL.Data = G(1);
+    msg_JawR.Data = G(2);
+
+    % publish gripper position
+    send(pub_JawL,msg_JawL);
+    send(pub_JawR,msg_JawR);
     
     waitfor(rate);
 end
@@ -118,8 +130,20 @@ end
 rosshutdown
 
 
-% Callback function
+% Callback functions
+% Pose command callback
+% Recives (x,y,z,r,p,y) as a Twist message
 function Twist_callback(src,msg)
     global T
     T = msg; 
+end
+% Gripper command callback
+% Recives +-100% gripper command
+% -100% = fully closed
+% +100% = fully opened
+% Convert to +-5cm command for each prismatic joint on the robotarm
+function Gripper_callback(src,msg)
+    global G
+    G(1) = msg/20;
+    G(2) = -msg/20;
 end

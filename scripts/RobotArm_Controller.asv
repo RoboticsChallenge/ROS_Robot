@@ -37,10 +37,15 @@ RobotArm.qlim = [[-2.1817 2.1817];[-3.4907 1.1345];[-0.6109 4.1015];[-pi pi];[-1
 % Starting ROS
 rosinit
 
+% Initializing global variables
+global G;
 global T;
 T = rosmessage('geometry_msgs/Twist');
-% Creating subscriber
-sub_Twist = rossubscriber("ros_robot/ManipulatorPose/Command",'geometry_msgs/Twist',@Twist_callback);
+G(1) = 0;
+G(2) = 0;
+% Creating subscribers
+sub_Pose = rossubscriber("/ros_robot/ManipulatorPose/Command",'geometry_msgs/Twist',@Twist_callback);
+sub_gripper = rossubscriber("/ros_robot/Gripper/Command",'std_msgs/Float64',@Gripper_callback);
 
 % Initializing publishers
 [pub_q1,msg_q1] = rospublisher('/ros_robot/L1_position_controller/command','std_msgs/Float64');
@@ -70,27 +75,10 @@ rate = robotics.Rate(20);
 % Calculate and publish data
 % Will exit and shutdown ros if we publish Linear.X > 1000
 while T.Linear.X < 1000
-      
-%    
-%         msg_q1.Data = q_temp(1);
-%         msg_q2.Data = q_temp(2);
-%         msg_q3.Data = q_temp(3);
-%         msg_q4.Data = q_temp(4);
-%         msg_q5.Data = q_temp(5);
-%         msg_q6.Data = q_temp(6);
-%         msg_JawL.Data = 0;
-%         msg_JawR.Data = 0;
-% 
-%         % Publish
-%         send(pub_q1,msg_q1);
-%         send(pub_q2,msg_q2);
-%         send(pub_q3,msg_q3);
-%         send(pub_q4,msg_q4); 
-%         send(pub_q5,msg_q5); 
-%         send(pub_q6,msg_q6); 
-%         send(pub_JawL,msg_JawL);
-%         send(pub_JawR,msg_JawR);
 
+    % Checks if new message has been recived with wanted pose for robotarm
+    % if new message has been recived, matlab will send nessecary joint
+    % angles following a trajectory calaulated in matlab
     if(T ~= Last_T)        
         % Create transformation matrix for wanted position and orientation
         Transform = transl(T.Linear.X,T.Linear.Y,T.Linear.Z)*rpy2tr(T.Angular.X,T.Angular.Y,T.Angular.Z,'deg');
@@ -106,42 +94,26 @@ while T.Linear.X < 1000
         % publishing joint angles to arm 
         for i=1: length(Trajectory)
 
-        msg_q1.Data = Trajectory(i,1);
-        msg_q2.Data = Trajectory(i,2);
-        msg_q3.Data = -Trajectory(i,3);
-        msg_q4.Data = Trajectory(i,4);
-        msg_q5.Data = -Trajectory(i,5);
-        msg_q6.Data = Trajectory(i,6);
+            msg_q1.Data = Trajectory(i,1);
+            msg_q2.Data = Trajectory(i,2);
+            msg_q3.Data = -Trajectory(i,3);
+            msg_q4.Data = Trajectory(i,4);
+            msg_q5.Data = -Trajectory(i,5);
+            msg_q6.Data = Trajectory(i,6);
 
-        % Publish
-        send(pub_q1,msg_q1);
-        send(pub_q2,msg_q2);
-        send(pub_q3,msg_q3);
-        send(pub_q4,msg_q4); 
-        send(pub_q5,msg_q5); 
-        send(pub_q6,msg_q6); 
+            % Publish
+            send(pub_q1,msg_q1);
+            send(pub_q2,msg_q2);
+            send(pub_q3,msg_q3);
+            send(pub_q4,msg_q4); 
+            send(pub_q5,msg_q5); 
+            send(pub_q6,msg_q6); 
 
-        waitfor(rate);
-end 
-
-
-        msg_q1.Data = q_temp(1);
-        msg_q2.Data = q_temp(2);
-        msg_q3.Data = q_temp(3);
-        msg_q4.Data = q_temp(4);
-        msg_q5.Data = q_temp(5);
-        msg_q6.Data = q_temp(6);
-
-        % Publish
-        send(pub_q1,msg_q1)
-        send(pub_q2,msg_q2)
-        send(pub_q3,msg_q3)
-        send(pub_q4,msg_q4) 
-        send(pub_q5,msg_q5) 
-        send(pub_q6,msg_q6) 
-
+            waitfor(rate);
+        end 
     end
-
+    
+    q_from = q_to;
     Last_T = T;
     
     waitfor(rate);
@@ -151,8 +123,19 @@ end
 rosshutdown
 
 
-% Callback function
+% Callback functions
+% Pose command callback
 function Twist_callback(src,msg)
     global T
     T = msg; 
+end
+% Gripper command callback
+% Recives +-100% gripper command
+% -100% = fully closed
+% +100% = fully opened
+
+function Gripper_callback(src,msg)
+    global G
+    G(1) = msg/20;
+    G(2) = -msg/20;
 end
