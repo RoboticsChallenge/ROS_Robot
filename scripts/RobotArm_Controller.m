@@ -85,6 +85,10 @@ while T.Linear.X < 1000
         
         % inverse kinematics to find nessecary joint angles for wanted
         % pose
+        % We have had some issues with error messages when running this
+        % command with some poses. The erros is stating that it is an
+        % iligal pose even though it is possible (tested with teach
+        % function)
         q_to = RobotArm.ikine(Transform);
 
         % Making a trajectory to wanted pose
